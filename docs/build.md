@@ -15,11 +15,11 @@ Use this when you want a fully built and bootable image.
 ```
 make build-x86
 ```
-### build-objs
-Compiles only the object files for kernel and x86 source code, but does not link or create the ISO.
-Useful for quick compilation if you want to check for errors or build incrementally before linking.
+### run
+Builds the kernel image (via build-x86) and runs it inside QEMU for testing.
+Requires QEMU to be installed.
 ```
-make build-objs
+make run
 ```
 ### clean
 Deletes all build artifacts and intermediate files including:
@@ -32,9 +32,17 @@ Use this to start fresh or free up disk space.
 ```
 make clean
 ```
-### run
-Builds the kernel image (via build-x86) and runs it inside QEMU for testing.
-Requires QEMU to be installed.
+### iso
+builds only the ISO image for the kernel.
+useful if `kernel.bin` is already built.
 ```
-make run
+make iso
+```
+### kernel
+builds only the `kernel.bin` file
+### build-objs
+Compiles only the object files for kernel and x86 source code, but does not link or create the ISO.
+Useful for quick compilation if you want to check for errors or build incrementally before linking.
+```
+make build-objs
 ```
