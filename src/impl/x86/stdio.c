@@ -33,8 +33,8 @@ int printf(const char* _Format, ...) {
                     break;
                 case 's':
                     string = va_arg(args, char*);
-                    while(*string) {
-                        putchar(*string++);
+                    for(int string_idx = 0; string_idx < strlen(string); string_idx++) {
+                        out_str[out_idx] = string[string_idx];
                     }
                     out_idx++;
                     break;
