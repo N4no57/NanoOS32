@@ -23,7 +23,7 @@ int printf(char const* const _Format, ...) {
                     char val = *args;
                     args++;
                     out_str += val;
-                    break
+                    break;
             }
         }
     }
