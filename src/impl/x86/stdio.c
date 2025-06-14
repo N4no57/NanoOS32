@@ -1,10 +1,13 @@
 #include <stdio.h>
 #include <stdint.h>
+#include <terminal.h>
+#include <string.h>
+#include <stdarg.h>
 
-int printf(char const* const _Format, ...) {
-    uint32_t* args = &_Format + 1;
-    char out_str = "";
-    int arg_idx = 0;
+int printf(const char* _Format, ...) {
+    va_list args;
+    va_start(args, _Format);
+    char* out_str = "";
 
     for (int i = 0; i < strlen(_Format); i++) {
         if (_Format[i] != '%') {
@@ -15,17 +18,17 @@ int printf(char const* const _Format, ...) {
 
             switch(specifier) {
                 case 'd':
-                    int val = *args;
-                    args++;
+                    int val = va_arg(args, int);
                     out_str += val;
                     break;
                 case 'c':
-                    char val = *args;
-                    args++;
-                    out_str += val;
+                    char c = va_arg(args, char);
+                    out_str += c;
                     break;
             }
         }
     }
+    terminal_writestring(out_str);
+
     return 0;
 }
