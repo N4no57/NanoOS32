@@ -1,1 +1,1 @@
-int printf(const char, ...);
+int printf(const char* _Format, ...);
