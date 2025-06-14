@@ -1,5 +1,10 @@
 {
     "files.associations": {
-        "stddef.h": "c"
+        "stddef.h": "c",
+        "stdint.h": "c",
+        "terminal.h": "c",
+        "string.h": "c",
+        "stdarg.h": "c",
+        "stdio.h": "c"
     }
 }

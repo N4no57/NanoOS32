@@ -1,19 +1,26 @@
 kernel_source_files := $(shell find src/impl/kernel -name '*.c')
 kernel_object_files := $(patsubst src/impl/kernel/%.c, build/kernel/%.o, $(kernel_source_files))
 
+driver_c_source_files := $(shell find src/impl/drivers -name '*.c')
+driver_c_object_files := $(patsubst src/impl/drivers/%.c, build/drivers/%.o, $(driver_c_source_files))
+
 x86_c_source_files := $(shell find src/impl/x86 -name '*.c')
 x86_c_object_files := $(patsubst src/impl/x86/%.c, build/x86/%.o, $(x86_c_source_files))
 
 x86_asm_source_files := $(shell find src/impl/x86 -name '*.s')
 x86_asm_object_files := $(patsubst src/impl/x86/%.s, build/x86/%.o, $(x86_asm_source_files))
 
-x86_object_files := $(x86_c_object_files) $(x86_asm_object_files)
+x86_object_files := $(x86_c_object_files) $(driver_c_object_files) $(x86_asm_object_files)
 
 CROSS_GCC := $(HOME)/opt/cross/bin/i686-elf-gcc
 CROSS_AS  := $(HOME)/opt/cross/bin/i686-elf-as
 CFLAGS    := -I src/intf -ffreestanding -O2 -Wall -nostdlib
 
 $(kernel_object_files): build/kernel/%.o : src/impl/kernel/%.c
+	mkdir -p $(dir $@)
+	$(CROSS_GCC) -c $(CFLAGS) $< -o $@
+
+$(driver_c_object_files): build/drivers/%.o : src/impl/drivers/%.c
 	mkdir -p $(dir $@)
 	$(CROSS_GCC) -c $(CFLAGS) $< -o $@
 
@@ -37,7 +44,7 @@ clean:
 	rm -rf build/ dist/ disc/ && \
 	rm targets/x86/iso/boot/grub/kernel.bin
 
-build-objs: $(kernel_object_files) $(x86_c_object_files) $(x86_asm_object_files)
+build-objs: $(kernel_object_files) $(x86_object_files)
 
 kernel: build-objs
 	mkdir -p dist/x86 && \
