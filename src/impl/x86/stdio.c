@@ -2,7 +2,7 @@
 #include <stdint.h>
 
 int printf(char const* const _Format, ...) {
-    uint32_t* arg = &_Format + 1;
+    uint32_t* args = &_Format + 1;
     char out_str = "";
     int arg_idx = 0;
 
@@ -17,8 +17,15 @@ int printf(char const* const _Format, ...) {
                 case 'd':
                     int val = *args;
                     args++;
+                    out_str += val;
                     break;
+                case 'c':
+                    char val = *args;
+                    args++;
+                    out_str += val;
+                    break
             }
         }
     }
+    return 0;
 }
