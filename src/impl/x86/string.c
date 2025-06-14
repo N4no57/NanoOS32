@@ -7,3 +7,9 @@ size_t strlen(const char* str) {
     }
     return len;
 }
+
+int strcmp(const char* a, const char* b) {
+    if (strlen(a) != strlen(b)) {
+        return 0;
+    }
+}
