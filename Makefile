@@ -39,7 +39,7 @@ clean:
 
 build-objs: $(kernel_object_files) $(x86_c_object_files) $(x86_asm_object_files)
 
-kernel:
+kernel: build-objs
 	mkdir -p dist/x86 && \
 	$(HOME)/opt/cross/bin/i686-elf-gcc -o dist/x86/kernel.bin -T targets/x86/linker.ld -ffreestanding -O2 -nostdlib $(kernel_object_files) $(x86_object_files)
 
