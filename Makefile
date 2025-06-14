@@ -11,7 +11,7 @@ x86_object_files := $(x86_c_object_files) $(x86_asm_object_files)
 
 CROSS_GCC := $(HOME)/opt/cross/bin/i686-elf-gcc
 CROSS_AS  := $(HOME)/opt/cross/bin/i686-elf-as
-CFLAGS    := -I src/intf -ffreestanding -O2 -Wall
+CFLAGS    := -I src/intf -ffreestanding -O2 -Wall -nostdlib
 
 $(kernel_object_files): build/kernel/%.o : src/impl/kernel/%.c
 	mkdir -p $(dir $@)
@@ -29,7 +29,7 @@ $(x86_asm_object_files): build/x86/%.o : src/impl/x86/%.s
 build-x86: build-objs
 	mkdir -p dist/x86 && \
 	mkdir -p disc/x86 && \
-	$(HOME)/opt/cross/bin/i686-elf-gcc -o dist/x86/kernel.bin -T targets/x86/linker.ld -ffreestanding -O2 -nostdlib $(kernel_object_files) $(x86_object_files) && \
+	$(CROSS_GCC) -o dist/x86/kernel.bin -T targets/x86/linker.ld -ffreestanding -O2 -nostdlib $(kernel_object_files) $(x86_object_files) && \
 	cp dist/x86/kernel.bin targets/x86/iso/boot/grub && \
 	grub-mkrescue /usr/lib/grub/i386-pc -o disc/x86/kernel.iso targets/x86/iso
 
@@ -41,7 +41,7 @@ build-objs: $(kernel_object_files) $(x86_c_object_files) $(x86_asm_object_files)
 
 kernel: build-objs
 	mkdir -p dist/x86 && \
-	$(HOME)/opt/cross/bin/i686-elf-gcc -o dist/x86/kernel.bin -T targets/x86/linker.ld -ffreestanding -O2 -nostdlib $(kernel_object_files) $(x86_object_files)
+	$(CROSS_GCC) -o dist/x86/kernel.bin -T targets/x86/linker.ld -ffreestanding -O2 -nostdlib $(kernel_object_files) $(x86_object_files)
 
 iso:
 	mkdir -p disc/x86 && \
