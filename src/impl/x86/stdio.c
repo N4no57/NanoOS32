@@ -7,23 +7,28 @@
 int printf(const char* _Format, ...) {
     va_list args;
     va_start(args, _Format);
-    char* out_str = "";
+    char out_str[256];
+    int out_idx = 0;
 
     for (int i = 0; i < strlen(_Format); i++) {
         if (_Format[i] != '%') {
-            out_str += _Format[i];
+            out_str[out_idx] = _Format[i];
+            out_idx++;
         } else {
             i++;
             char specifier = _Format[i];
+            int val;
 
             switch(specifier) {
                 case 'd':
-                    int val = va_arg(args, int);
-                    out_str += val;
+                    val = va_arg(args, int);
+                    out_str[out_idx] = (char)val;
+                    out_idx++;
                     break;
                 case 'c':
-                    char c = va_arg(args, char);
-                    out_str += c;
+                    val = va_arg(args, int);
+                    out_str[out_idx] = (char)val;
+                    out_idx++;
                     break;
             }
         }
