@@ -20,5 +20,6 @@ It's designed for learning OS fundamentals such as bootloading, kernel developme
 See [docs/build.md](docs/build.md) for full instructions.  
 Quick setup:
 
-```sh
+```
 make build-x86
+qemu-system-i386 -cdrom ./disc/x86/kernel.iso
