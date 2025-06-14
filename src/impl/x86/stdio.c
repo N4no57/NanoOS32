@@ -18,6 +18,7 @@ int printf(const char* _Format, ...) {
             i++;
             char specifier = _Format[i];
             int val;
+            char* string;
 
             switch(specifier) {
                 case 'd':
@@ -28,6 +29,11 @@ int printf(const char* _Format, ...) {
                 case 'c':
                     val = va_arg(args, int);
                     out_str[out_idx] = (char)val;
+                    out_idx++;
+                    break;
+                case 's':
+                    string = va_arg(args, char*);
+                    out_str[out_idx] = (char)
                     out_idx++;
                     break;
             }
