@@ -19,7 +19,7 @@ void test_strlen() {
 
     char all_nulls[4] = {0, 0, 0, 0};
     ASSERT(strlen(all_nulls) == 0);
-    
+
     test_pass("test_strlen()");
 }
 
@@ -40,6 +40,10 @@ void test_strcmp() {
     ASSERT(strcmp("", "a") < 0);
     ASSERT(strcmp("a", "") > 0);
     test_pass("test_strcmp()");
+}
+
+void test_strcpy() {
+    
 }
 
 void test_string() {
