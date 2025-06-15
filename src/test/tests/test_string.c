@@ -20,6 +20,10 @@ void test_strcmp() {
     ASSERT(strcmp("abc", "abd") < 0);
     ASSERT(strcmp("b", "a") > 0);
     ASSERT(strcmp("abd", "abc") > 0);
+    ASSERT(strcmp("a", "a\0b") == 0);  // should stop at \0
+    ASSERT(strcmp("a\0c", "a") == 0);  // should compare only first 'a'
+    ASSERT(strcmp("", "a") < 0);
+    ASSERT(strcmp("a", "") > 0);
     test_pass("test_strcmp()");
 }
 
