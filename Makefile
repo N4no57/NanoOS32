@@ -110,5 +110,8 @@ iso:
 	cp dist/x86/kernel.bin targets/x86/iso/boot/grub && \
     grub-mkrescue /usr/lib/grub/i386-pc -o disc/x86/kernel.iso targets/x86/iso
 
+run-test: test-x86
+	qemu-system-i386 -cdrom ./disc/test_x86/kernel.iso
+
 run: build-x86
 	qemu-system-i386 -cdrom ./disc/x86/kernel.iso
