@@ -68,11 +68,34 @@ void test_memset(const int test_num, const int test_tot) {
     test_pass("test_memset()", test_num, test_tot);
 }
 
+void test_memcpy(const int test_num, const int test_tot) {
+    const char *str1 = "132452";
+    size_t len = strlen(str1) + 1;
+
+    char str2[10];
+    memset(str2, 0xAA, sizeof(str2)); // known filler
+
+    str2[len] = 0xCC; // canary
+
+    char* ret = memcpy(str2, str1, len);
+    ASSERT(ret == str2);
+
+    for (size_t i = 0; i < len; i++) {
+        ASSERT(str2[i] == str1[i]);
+    }
+
+    ASSERT(str2[len] == 0xCC); // check no overflow
+
+    test_pass("test_memcpy()", test_num, test_tot);
+}
+
+
 void test_string() {
-    int test_tot = 4;
+    int test_tot = 5;
     int test_num = 1;
     test_strlen(test_num++, test_tot);
     test_strcmp(test_num++, test_tot);
     test_strcpy(test_num++, test_tot);
     test_memset(test_num++, test_tot);
+    test_memcpy(test_num++, test_tot);
 }
