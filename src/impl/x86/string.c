@@ -34,11 +34,11 @@ void *memset(void* dest, int c, size_t count) {
     return dest;
 }
 
-void *memcpy(void* dest, const void* src, size_t count) {
-    unsigned char *ptr = (unsigned char*) dest;
-    const unsigned char *s = (const unsigned char*) src;
-    for (size_t i = 0; i < count; i++) {
-        ptr[i] = s[i];
+void* memcpy(void* dest, const void* src, size_t count) {
+    char* d = dest;
+    const char* s = src;
+    for (int i = 0; i < count; i++) {
+        d[i] = s[i];
     }
     return dest;
 }
