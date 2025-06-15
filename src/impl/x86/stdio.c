@@ -37,8 +37,9 @@ int printf(const char* _Format, ...) {
     va_start(args, _Format);
     char out_str[256];
     int out_idx = 0;
+    int i = 0;
 
-    for (int i = 0; i < strlen(_Format); i++) {
+    do {
         if(_Format[i] != '%') {
             out_str[out_idx] = _Format[i];
             out_idx++;
@@ -52,10 +53,11 @@ int printf(const char* _Format, ...) {
                 case 'd':
                     val = va_arg(args, int);
                     char num_buf[16];
+                    int num_idx = 0;
                     itoa(val, num_buf);
-                    for(int num_idx = 0; num_idx < strlen(num_buf); num_idx++) {
+                    do {
                         out_str[out_idx++] = num_buf[num_idx];
-                    }
+                    } while (num_buf[num_idx++] != '\0');
                     break;
                 case 'c':
                     val = va_arg(args, int);
@@ -64,14 +66,14 @@ int printf(const char* _Format, ...) {
                     break;
                 case 's':
                     string = va_arg(args, char*);
-                    for(int string_idx = 0; string_idx < strlen(string); string_idx++) {
+                    int string_idx = 0;
+                    do {
                         out_str[out_idx] = string[string_idx];
-                        out_idx++;
-                    }
+                    } while (string[string_idx++] != '\0');
                     break;
             }
         }
-    }
+    } while (_Format[i++] != '\0');
     terminal_writestring(out_str);
 
     return 0;
