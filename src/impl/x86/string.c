@@ -17,8 +17,10 @@ int strcmp(const char* a, const char* b) {
     return (unsigned char)*a - (unsigned char)*b;
 }
 
-void strcpy(char* dest, const char* src) {
-    for (int i = 0; i < strlen(src); i++) {
+char *strcpy(char* dest, const char* src) {
+    int i = 0;
+    do {
         dest[i] = src[i];
-    }
+    } while (src[i++] != '\0');
+    return dest;
 }
