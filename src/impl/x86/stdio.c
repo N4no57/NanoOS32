@@ -1,8 +1,36 @@
 #include <stdio.h>
-#include <stdint.h>
 #include <terminal.h>
 #include <string.h>
 #include <stdarg.h>
+
+void itoa(int value, char* str) {
+    char temp[16];
+    int i = 0, j = 0;
+    int is_negative = 0;
+
+    if (value == 0) {
+        str[0] = '0';
+        str[1] = '\0';
+        return;
+    }
+
+    if (value < 0) {
+        is_negative = 1;
+        value = -value;
+    }
+
+    while (value != 0) {
+        temp[i++] = (value % 10) + '0';
+        value /= 10;
+    }
+
+    if (is_negative)
+        temp[i++] = '-';
+
+    while (i--)
+        str[j++] = temp[i];
+    str[j] = '\0';
+}
 
 int printf(const char* _Format, ...) {
     va_list args;
@@ -11,7 +39,7 @@ int printf(const char* _Format, ...) {
     int out_idx = 0;
 
     for (int i = 0; i < strlen(_Format); i++) {
-        if (_Format[i] != '%') {
+        if(_Format[i] != '%') {
             out_str[out_idx] = _Format[i];
             out_idx++;
         } else {
@@ -23,8 +51,11 @@ int printf(const char* _Format, ...) {
             switch(specifier) {
                 case 'd':
                     val = va_arg(args, int);
-                    out_str[out_idx] = (char)val;
-                    out_idx++;
+                    char num_buf[16];
+                    itoa(val, num_buf);
+                    for(int num_idx = 0; num_idx < strlen(num_buf); num_idx++) {
+                        out_str[out_idx++] = num_buf[num_idx];
+                    }
                     break;
                 case 'c':
                     val = va_arg(args, int);
@@ -35,8 +66,8 @@ int printf(const char* _Format, ...) {
                     string = va_arg(args, char*);
                     for(int string_idx = 0; string_idx < strlen(string); string_idx++) {
                         out_str[out_idx] = string[string_idx];
+                        out_idx++;
                     }
-                    out_idx++;
                     break;
             }
         }
