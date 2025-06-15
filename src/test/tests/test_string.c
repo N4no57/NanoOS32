@@ -43,10 +43,18 @@ void test_strcmp() {
 }
 
 void test_strcpy() {
-    
+    char str1[] = "hello";
+    char str2[10];
+    char* ret = strcpy(str2, str1);
+
+    ASSERT(ret == str2);             // returned pointer is correct
+    ASSERT(strcmp(str2, str1) == 0); // content is copied correctly
+
+    test_pass("test_strcpy()");
 }
 
 void test_string() {
     test_strlen();
     test_strcmp();
+    test_strcpy();
 }
