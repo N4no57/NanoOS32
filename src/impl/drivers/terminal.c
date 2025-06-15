@@ -1,4 +1,5 @@
 #include <stdint.h>
+#include <stddef.h>
 #include <terminal.h>
 #include <string.h>
 
@@ -38,6 +39,12 @@ void terminal_putentryat(char c, uint8_t color, size_t x, size_t y) {
 }
 
 void terminal_putchar(char c) {
+	if (c == '\n') {
+		terminal_row++;
+		terminal_column = 0;
+		return;
+	}
+
 	terminal_putentryat(c, terminal_color, terminal_column, terminal_row);
 	if (++terminal_column == VGA_WIDTH) {
 		terminal_column = 0;
@@ -49,13 +56,7 @@ void terminal_putchar(char c) {
 
 void terminal_write(const char* data, size_t size) {
 	for (size_t i = 0; i < size; i++) {
-        if (data[i] == '\n') {
-            terminal_row++;
-            terminal_column = 0;
-        	continue;
-    	} else {
-        	terminal_putchar(data[i]);
-        }
+        terminal_putchar(data[i]);
     }
 }
 
