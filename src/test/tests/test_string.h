@@ -1,1 +1,1 @@
-void test_strlen();
+void test_string();
