@@ -1,6 +1,8 @@
 #include <assert.h>
 #include <string.h>
 #include <test_string.h>
+#include <stdio.h>
+#include <terminal.h>
 
 void test_strlen(const int test_num, const int test_tot) {
     ASSERT(strlen("") == 0);
@@ -84,7 +86,7 @@ void test_memcpy(const int test_num, const int test_tot) {
         ASSERT(str2[i] == str1[i]);
     }
 
-    ASSERT(str2[len] == 0xCC); // check no overflow
+    ASSERT((unsigned char)str2[7] == 0xCC); // check no overflow
 
     test_pass("test_memcpy()", test_num, test_tot);
 }
