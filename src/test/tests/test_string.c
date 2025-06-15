@@ -2,7 +2,7 @@
 #include <string.h>
 #include <test_string.h>
 
-void test_strlen() {
+void test_strlen(const int test_num, const int test_tot) {
     ASSERT(strlen("") == 0);
     ASSERT(strlen("a") == 1);
     ASSERT(strlen("abc") == 3);
@@ -20,10 +20,10 @@ void test_strlen() {
     char all_nulls[4] = {0, 0, 0, 0};
     ASSERT(strlen(all_nulls) == 0);
 
-    test_pass("test_strlen()");
+    test_pass("test_strlen()", test_num, test_tot);
 }
 
-void test_strcmp() {
+void test_strcmp(const int test_num, const int test_tot) {
     ASSERT(strcmp("", "") == 0);
     ASSERT(strcmp("a", "a") == 0);
     ASSERT(strcmp("hello", "hello") == 0);
@@ -39,10 +39,10 @@ void test_strcmp() {
     ASSERT(strcmp("a\0c", "a") == 0);  // should compare only first 'a'
     ASSERT(strcmp("", "a") < 0);
     ASSERT(strcmp("a", "") > 0);
-    test_pass("test_strcmp()");
+    test_pass("test_strcmp()", test_num, test_tot);
 }
 
-void test_strcpy() {
+void test_strcpy(const int test_num, const int test_tot) {
     char str1[] = "hello";
     char str2[10];
     char* ret = strcpy(str2, str1);
@@ -50,10 +50,10 @@ void test_strcpy() {
     ASSERT(ret == str2);             // returned pointer is correct
     ASSERT(strcmp(str2, str1) == 0); // content is copied correctly
 
-    test_pass("test_strcpy()");
+    test_pass("test_strcpy()", test_num, test_tot);
 }
 
-void test_memset() {
+void test_memset(const int test_num, const int test_tot) {
     char str[10];
     char set_to = 0;
     char* ret = memset(str, set_to, sizeof(str));
@@ -65,12 +65,14 @@ void test_memset() {
         ASSERT(str[i] == set_to);
     }
 
-    test_pass("test_memset()");
+    test_pass("test_memset()", test_num, test_tot);
 }
 
 void test_string() {
-    test_strlen();
-    test_strcmp();
-    test_strcpy();
-    test_memset();
+    int test_tot = 4;
+    int test_num = 1;
+    test_strlen(test_num++, test_tot);
+    test_strcmp(test_num++, test_tot);
+    test_strcpy(test_num++, test_tot);
+    test_memset(test_num++, test_tot);
 }
