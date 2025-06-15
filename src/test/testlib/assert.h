@@ -3,4 +3,4 @@
 } while (0)
 
 void test_fail(const char* file, int line, const char* expr);
-void test_pass(const char* name);
+void test_pass(const char* name, const int test_num, const int test_tot);

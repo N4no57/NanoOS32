@@ -5,6 +5,6 @@ void test_fail(const char* file, int line, const char* expr) {
     for (;;);
 }
 
-void test_pass(const char* name) {
-    printf("[PASS] %s\n", name);
+void test_pass(const char* name, const int test_num, const int test_tot) {
+    printf("[PASS] %s [%d/%d]\n", name, test_num, test_tot);
 }
