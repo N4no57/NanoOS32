@@ -10,5 +10,5 @@
 void kernel_main(void) {
 	terminal_initialize();
 
-    test_strlen();
+    test_string();
 }

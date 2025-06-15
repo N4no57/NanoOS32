@@ -8,6 +8,8 @@
         "stdio.h": "c",
         "type_traits": "c",
         "xtr1common": "c",
-        "xutility": "c"
+        "xutility": "c",
+        "assert.h": "c",
+        "test_string.h": "c"
     }
 }
