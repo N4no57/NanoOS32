@@ -25,10 +25,10 @@ char *strcpy(char* dest, const char* src) {
     return dest;
 }
 
-void *memset(void* dest, int c, size_t n) {
-    unsigned char *ptr = (unsigned char) dest;
+void *memset(void* dest, int c, size_t count) {
+    unsigned char *ptr = (unsigned char*) dest;
     unsigned char byte_val = (unsigned char) c;
-    for (size_t i = 0; i < n; i++) {
+    for (size_t i = 0; i < count; i++) {
         ptr[i] = byte_val;
     }
     return dest;
