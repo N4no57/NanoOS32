@@ -4,7 +4,22 @@
 
 void test_strlen() {
     ASSERT(strlen("") == 0);
+    ASSERT(strlen("a") == 1);
     ASSERT(strlen("abc") == 3);
+    ASSERT(strlen("a b c") == 5);
+    ASSERT(strlen("@#$%^") == 5);
+    ASSERT(strlen("a\0bcd") == 1);
+    ASSERT(strlen("abcdefghijklmnopqrstuvwxyz") == 26);
+
+    
+    char buf[256];
+    for (int i = 0; i < 255; i++) buf[i] = 'x';
+    buf[255] = '\0';
+    ASSERT(strlen(buf) == 255);
+
+    char all_nulls[4] = {0, 0, 0, 0};
+    ASSERT(strlen(all_nulls) == 0);
+    
     test_pass("test_strlen()");
 }
 
