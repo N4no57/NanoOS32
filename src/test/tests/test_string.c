@@ -53,8 +53,24 @@ void test_strcpy() {
     test_pass("test_strcpy()");
 }
 
+void test_memset() {
+    char str[10];
+    char set_to = 0;
+    char* ret = memset(str, set_to, sizeof(str));
+
+    ASSERT(ret == str);
+
+    // Check that every byte was set to 1
+    for (int i = 0; i < (int)sizeof(str); i++) {
+        ASSERT(str[i] == set_to);
+    }
+
+    test_pass("test_memset()");
+}
+
 void test_string() {
     test_strlen();
     test_strcmp();
     test_strcpy();
+    test_memset();
 }
