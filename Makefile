@@ -93,6 +93,8 @@ clean:
 build-objs: $(kernel_object_files) $(x86_object_files)
 
 test-x86: $(test_kernel_object_files) $(test_x86_object_files)
+	$(info test_kernel_object_files = $(test_kernel_object_files))
+	$(info test_x86_object_files = $(test_x86_object_files))
 	mkdir -p dist/test_x86 && \
 	mkdir -p disc/test_x86 && \
 	$(CROSS_GCC) -o dist/test_x86/kernel.bin -T targets/test_x86/linker.ld -ffreestanding -O2 -nostdlib $(test_kernel_object_files) $(test_x86_object_files) && \
