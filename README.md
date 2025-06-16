@@ -21,5 +21,5 @@ See [docs/build.md](docs/build.md) for full instructions.
 Quick setup:
 
 ```
-make build-x86
-qemu-system-i386 -cdrom ./disc/x86/kernel.iso
+make run
+```
