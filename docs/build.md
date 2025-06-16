@@ -40,9 +40,24 @@ make iso
 ```
 ### kernel
 builds only the `kernel.bin` file
+```
+make kernel
+```
 ### build-objs
 Compiles only the object files for kernel and x86 source code, but does not link or create the ISO.
 Useful for quick compilation if you want to check for errors or build incrementally before linking.
 ```
 make build-objs
+```
+
+### test-x86
+creates a test version of the kernel and iso that, currently, runs unit tests on the stdlib implementation 
+```
+make test-x86
+```
+
+### run-test
+builds and runs the test version of the kernel
+```
+make run-test
 ```
