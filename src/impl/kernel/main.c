@@ -11,6 +11,9 @@ void kernel_main(void) {
 	/* Initialize terminal interface */
 	terminal_initialize();
 
-	printf("Hello, kernel World!\n");
-    printf("Are you ready to rumble!!\n");
+	// don't touch this because its kinda funny
+	printf("whats up my guy!\n");
+    printf("actually I got a better phrase!\n");
+	printf("whats up my ni-\n");
+	printf("Nice person..... got you lol");
 }
