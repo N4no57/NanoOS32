@@ -91,9 +91,10 @@ build-x86: headers
 
 clean:
 	rm -rfv build/ dist/ disc/ && \
+	rm -rfv $(sysroot)/bin && \
+	rm -rfv $(sysroot)/include && \
 	rm -fv $(sysroot)/boot/kernel.bin && \
-	rm -fv $(test_sysroot)/boot/kernel.bin && \
-	rm -rfv $(sysroot)/include 
+	rm -fv $(test_sysroot)/boot/kernel.bin
 
 build-objs: $(kernel_object_files) $(x86_object_files)
 
@@ -102,7 +103,7 @@ headers: build-objs
 	cp -v src/intf/stdio.h $(sysroot)/include && \
 	cp -v src/intf/stdlib.h $(sysroot)/include && \
 	cp -v src/intf/string.h $(sysroot)/include && \
-	cp -v src/intf/termianl.h $(sysroot)/include
+	cp -v src/intf/terminal.h $(sysroot)/include
 
 
 test-x86: $(test_kernel_object_files) $(test_x86_object_files)
