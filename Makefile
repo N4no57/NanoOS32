@@ -83,12 +83,12 @@ build-x86: build-objs
 	mkdir -p dist/x86 && \
 	mkdir -p disc/x86 && \
 	$(CROSS_GCC) -o dist/x86/kernel.bin -T targets/x86/linker.ld -ffreestanding -O2 -nostdlib $(kernel_object_files) $(x86_object_files) && \
-	cp dist/x86/kernel.bin targets/x86/iso/boot/grub && \
+	cp dist/x86/kernel.bin targets/x86/iso/sysroot/boot && \
 	grub-mkrescue /usr/lib/grub/i386-pc -o disc/x86/kernel.iso targets/x86/iso
 
 clean:
 	rm -rf build/ dist/ disc/ && \
-	rm targets/x86/iso/boot/grub/kernel.bin
+	rm targets/x86/iso/sysroot/boot/kernel.bin
 
 build-objs: $(kernel_object_files) $(x86_object_files)
 
@@ -98,7 +98,7 @@ test-x86: $(test_kernel_object_files) $(test_x86_object_files)
 	mkdir -p dist/test_x86 && \
 	mkdir -p disc/test_x86 && \
 	$(CROSS_GCC) -o dist/test_x86/kernel.bin -T targets/test_x86/linker.ld -ffreestanding -O2 -nostdlib $(test_kernel_object_files) $(test_x86_object_files) && \
-	cp dist/test_x86/kernel.bin targets/test_x86/iso/boot/grub && \
+	cp dist/test_x86/kernel.bin targets/test_x86/iso/boot && \
 	grub-mkrescue /usr/lib/grub/i386-pc -o disc/test_x86/kernel.iso targets/test_x86/iso
 
 kernel: build-objs
