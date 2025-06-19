@@ -94,7 +94,7 @@ clean:
 	rm -rfv $(sysroot)/bin && \
 	rm -rfv $(sysroot)/include && \
 	rm -fv $(sysroot)/boot/kernel.bin && \
-	rm -fv $(test_sysroot)/boot/kernel.bin
+	rm -fv $(test_sysroot)/boot/kernel.bin 
 
 build-objs: $(kernel_object_files) $(x86_object_files)
 
