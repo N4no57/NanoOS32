@@ -36,14 +36,38 @@ stack_bottom:
 .skip 16384 # 16 KiB
 stack_top:
 
+.section .rodata
+.align 8
+gdt:
+	.quad 0                    # Null descriptor
+    .quad 0x00CF9A000000FFFF   # Code segment
+    .quad 0x00CF92000000FFFF   # Data segment
+gdtr:
+    .word 24 - 1               # Limit: 3 descriptors × 8 bytes - 1
+    .long gdt                  # Base address of GDT
+
 /*
 The linker script specifies _start as the entry point to the kernel and the
 bootloader will jump to this position once the kernel has been loaded. It
 doesn't make sense to return from this function as the bootloader is gone.
 */
-.section .text
+.section .text   
 .global _start
 .type _start, @function
+.type reloadSegments, @function
+.type reload_CS, @function
+
+reloadSegments:
+    ljmp $0x08, $reload_CS
+reload_CS:
+    mov $0x10, %ax
+    mov %ax, %ds
+    mov %ax, %es
+    mov %ax, %fs
+    mov %ax, %gs
+    mov %ax, %ss
+    ret
+
 _start:
 	/*
 	The bootloader has loaded us into 32-bit protected mode on a x86
@@ -75,6 +99,9 @@ _start:
 	C++ features such as global constructors and exceptions will require
 	runtime support to work as well.
 	*/
+
+	LGDT  gdtr
+	call reloadSegments
 
 	/*
 	Enter the high-level kernel. The ABI requires the stack is 16-byte
