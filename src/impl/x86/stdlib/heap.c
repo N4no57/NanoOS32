@@ -71,11 +71,25 @@ void* malloc(size_t size) {
     return (char *)chunk + sizeof(struct heapchunk_t);
 }
 
+void coalesce_chunk(void) {
+    struct heapchunk_t *chunk = heap.start;
+    while (chunk && chunk->next) {
+        if (!chunk->inuse && !chunk->next->inuse) {
+            chunk->size += sizeof(struct heapchunk_t) + chunk->next->size;
+            chunk->next = chunk->next->next;
+        } else {
+            chunk = chunk->next;
+        }
+    }
+}
+
 void free(void* ptr) {
     if (!ptr) return;
 
     struct heapchunk_t *chunk = (struct heapchunk_t *)((char *)ptr - sizeof(struct heapchunk_t));
     chunk->inuse = false;
+
+    coalesce_chunk();
 
     return;
 }
