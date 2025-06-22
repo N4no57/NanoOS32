@@ -10,6 +10,8 @@
         "xtr1common": "c",
         "xutility": "c",
         "assert.h": "c",
-        "test_string.h": "c"
+        "test_string.h": "c",
+        "stdlib.h": "c",
+        "stdbool.h": "c"
     }
 }

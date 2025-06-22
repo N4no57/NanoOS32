@@ -44,6 +44,8 @@ int printf(const char* _Format, ...) {
                         out_str[out_idx++] = string[string_idx];
                     } while (string[string_idx++] != '\0');
                     break;
+                default:
+                    return 1; // throw error, dealing with unknow specifier
             }
         }
     } while (_Format[i++] != '\0');
