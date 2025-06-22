@@ -26,7 +26,7 @@ void heap_init(void) {
     heap.start->size = heap.avail - sizeof(struct heapchunk_t);
     heap.start->inuse = false;
     heap.start->next = NULL;
-    printf("heap contains, %d bytes\n", heap.avail);
+    //printf("heap contains, %d bytes\n", heap.avail);
 }
 
 static bool debug_malloc = false;

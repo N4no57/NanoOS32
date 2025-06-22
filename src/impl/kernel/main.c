@@ -14,10 +14,10 @@ void kernel_main(void) {
 	heap_init();
 
 	// don't touch this because its kinda funny
-	//printf("whats up my guy!\n");
-    //printf("actually I got a better phrase!\n");
-	//printf("whats up my ni-\n");
-	//printf("Nice person..... got you lol\n");
+	printf("whats up my guy!\n");
+    printf("actually I got a better phrase!\n");
+	printf("whats up my ni-\n");
+	printf("Nice person..... got you lol\n");
 
 	int *a = (int*)malloc(sizeof(int) * 5);
 
