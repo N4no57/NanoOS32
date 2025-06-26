@@ -49,4 +49,14 @@ SECTIONS
 
 	/* The compiler may produce other sections, by default it will put them in
 	   a segment with the same name. Simply add stuff here as needed. */
+	. = ALIGN(4K);       /* Align to 4KB page boundary */
+	heap_start = .;      /* Label the current address as heap_start */
+
+	. = . + 512K;        /* Reserve 512 KB for heap */
+
+	heap_end = .;        /* Label this address as heap_end */
+
+	.heap : {
+		BYTE(0);         /* Dummy byte to force section creation */
+	}
 }
