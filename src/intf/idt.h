@@ -3,6 +3,8 @@
 
 #include <stdint.h>
 
+#define IDT_MAX_DESCRIPTORS 256
+
 typedef struct {
 	uint16_t    isr_low;      // The lower 16 bits of the ISR's address
 	uint16_t    kernel_cs;    // The GDT segment selector that the CPU will load into CS before calling the ISR
@@ -15,5 +17,8 @@ typedef struct {
 	uint16_t	limit;
 	uint32_t	base;
 } __attribute__((packed)) idtr_t;
+
+void exception_handler(void);
+void idt_init(void);
 
 #endif
