@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <terminal.h>
 #include <stdlib.h>
+#include <idt.h>
 
 /* Check if the compiler thinks you are targeting the wrong operating system. */
 #if defined(__linux__)
@@ -12,6 +13,7 @@ void kernel_main(void) {
 	/* Initialize kernel code */
 	terminal_initialize();
 	heap_init();
+	idt_init();
 
 	// don't touch this because its kinda funny
 	printf("whats up my guy!\n");
@@ -21,10 +23,14 @@ void kernel_main(void) {
 
 	int *a = (int*)malloc(sizeof(int) * 5);
 
+	a[0] = 1;
+
 	if (a == NULL) {
 		printf("malloc() failure");
 		return;
 	}
+
+	__asm__ volatile("int $0x00");
 
 	free(a);
 }
