@@ -28,7 +28,7 @@ irq_no_err_stub 12
 irq_no_err_stub 13
 irq_no_err_stub 14
 irq_no_err_stub 15
-
+    
 global irq_stub_table
 section .data
 irq_stub_table:
