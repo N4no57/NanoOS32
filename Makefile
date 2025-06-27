@@ -14,7 +14,10 @@ x86_c_object_files := $(patsubst src/impl/x86/%.c, build/ShitOS/x86/%.o, $(x86_c
 x86_asm_source_files := $(shell find src/impl/x86 -name '*.s')
 x86_asm_object_files := $(patsubst src/impl/x86/%.s, build/ShitOS/x86/%.o, $(x86_asm_source_files))
 
-x86_object_files := $(x86_c_object_files) $(driver_c_object_files) $(x86_asm_object_files)
+x86_nasm_source_files := $(shell find src/impl/x86 -name '*.asm')
+x86_nasm_object_files := $(patsubst src/impl/x86/%.asm, build/ShitOS/x86/%.o, $(x86_nasm_source_files))
+
+x86_object_files := $(x86_c_object_files) $(driver_c_object_files) $(x86_asm_object_files) $(x86_nasm_object_files)
 
 #test kernel object files
 test_kernel_source_files := $(shell find src/test/testkernel -name '*.c')
@@ -55,6 +58,10 @@ $(x86_c_object_files): build/ShitOS/x86/%.o : src/impl/x86/%.c
 $(x86_asm_object_files): build/ShitOS/x86/%.o : src/impl/x86/%.s
 	mkdir -vp $(dir $@)
 	$(CROSS_AS) $< -o $@
+
+$(x86_nasm_object_files): build/ShitOS/x86/%.o : src/impl/x86/%.asm
+	mkdir -vp $(dir $@)
+	nasm -f elf32 $< -o $@
 
 #object files for test kernel
 $(test_kernel_object_files): build/test/kernel/%.o : src/test/testkernel/%.c
