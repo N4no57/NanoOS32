@@ -1,19 +1,18 @@
 [BITS 32]
-extern exception_handler
+extern interrupt_handler
 
-; ISR without error code
-%macro isr_no_err_stub 1
-global isr_stub_%1
-isr_stub_%1:
-    call exception_handler
-    iret
+%macro isr_err_stub 1
+isr_stub_%+%1:
+    push %1
+    call interrupt_handler
+    add esp, 4
+    iret 
 %endmacro
 
-; ISR with error code
-%macro isr_err_stub 1
-global isr_stub_%1
-isr_stub_%1:
-    call exception_handler
+%macro isr_no_err_stub 1
+isr_stub_%+%1:
+    push %1
+    call interrupt_handler
     add esp, 4
     iret
 %endmacro
@@ -52,11 +51,28 @@ isr_no_err_stub 29
 isr_err_stub    30
 isr_no_err_stub 31
 
+; IRQ vectors
+isr_no_err_stub 32
+isr_no_err_stub 33
+isr_no_err_stub 34
+isr_no_err_stub 35
+isr_no_err_stub 36
+isr_no_err_stub 37
+isr_no_err_stub 38
+isr_no_err_stub 39
+isr_no_err_stub 40
+isr_no_err_stub 41
+isr_no_err_stub 42
+isr_no_err_stub 43
+isr_no_err_stub 44
+isr_no_err_stub 45
+isr_no_err_stub 46
+isr_no_err_stub 47
+
 global isr_stub_table
-section .data
 isr_stub_table:
 %assign i 0 
-%rep    32 
-    dd isr_stub_%+i
+%rep    48 
+    dd isr_stub_%+i ; use DQ instead if targeting 64-bit
 %assign i i+1 
 %endrep
