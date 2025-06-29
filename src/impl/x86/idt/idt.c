@@ -1,4 +1,5 @@
 #include <idt.h>
+#include <pic.h>
 #include <stdbool.h>
 #include <stdio.h>
 
@@ -10,8 +11,12 @@ static idt_entry_t idt[256];
 static idtr_t idtr;
 
 __attribute__((noreturn))
-void exception_handler(void) {
-    printf("OH NO!\nAnyways");
+void interrupt_handler(unsigned char isr) {
+    printf("interrupt: %d\n", isr);
+    if (isr >= 32 && isr <= 47) {
+        printf("IRQ: %d\n", isr - 32);
+        PIC_sendEOI(isr - 32);
+    }
     __asm__ volatile ("cli; hlt"); // Completely hangs the computer
 }
 
@@ -27,9 +32,9 @@ void idt_set_descriptor(uint8_t vector, void* isr, uint8_t flags) {
 
 void idt_init() {
     idtr.base = (uintptr_t)&idt[0];
-    idtr.limit = (uint16_t)sizeof(idt_entry_t) * IDT_MAX_DESCRIPTORS - 1;
+    idtr.limit = (uint16_t)(sizeof(idt_entry_t) * IDT_MAX_DESCRIPTORS - 1);
 
-    for (uint8_t vector = 0; vector < 32; vector++) {
+    for (uint8_t vector = 0; vector < 48; vector++) {
         idt_set_descriptor(vector, isr_stub_table[vector], 0x8E);
         vectors[vector] = true;
     }

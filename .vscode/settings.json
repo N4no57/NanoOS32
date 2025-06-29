@@ -12,6 +12,9 @@
         "assert.h": "c",
         "test_string.h": "c",
         "stdlib.h": "c",
-        "stdbool.h": "c"
+        "stdbool.h": "c",
+        "irq.h": "c",
+        "idt.h": "c",
+        "pic.h": "c"
     }
 }

@@ -25,14 +25,12 @@ void kernel_main(void) {
 
 	int *a = (int*)malloc(sizeof(int) * 5);
 
-	a[0] = 1;
-
 	if (a == NULL) {
 		printf("malloc() failure");
 		return;
 	}
 
-	__asm__ volatile("int $0x00");
+	//__asm__ volatile("int $0x00");
 
 	free(a);
 }
