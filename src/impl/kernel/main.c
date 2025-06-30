@@ -17,20 +17,5 @@ void kernel_main(void) {
 	idt_init();
 	PIC_remap(PIC1, PIC2);
 
-	// don't touch this because its kinda funny
-	printf("whats up my guy!\n");
-    printf("actually I got a better phrase!\n");
-	printf("whats up my ni-\n");
-	printf("Nice person..... got you lol\n");
-
-	int *a = (int*)malloc(sizeof(int) * 5);
-
-	if (a == NULL) {
-		printf("malloc() failure");
-		return;
-	}
-
-	//__asm__ volatile("int $0x00");
-
-	free(a);
+	while (1) {}
 }
