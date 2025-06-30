@@ -6,18 +6,31 @@
 static bool vectors[IDT_MAX_DESCRIPTORS];
 extern void* isr_stub_table[];
 
+__attribute__((noreturn))
+void exception_handler(unsigned char isr) {
+    printf("Exception interrupt\n");
+    printf("interrupt code: %d\n", isr);
+    __asm__ volatile("cli");
+    __asm__ volatile("hlt");
+}
+
 __attribute__((aligned(0x10)));
 static idt_entry_t idt[256];
 static idtr_t idtr;
 
-__attribute__((noreturn))
 void interrupt_handler(unsigned char isr) {
-    printf("interrupt: %d\n", isr);
-    if (isr >= 32 && isr <= 47) {
-        printf("IRQ: %d\n", isr - 32);
-        PIC_sendEOI(isr - 32);
+    if (isr < 32) {
+        exception_handler(isr);
     }
-    __asm__ volatile ("cli; hlt"); // Completely hangs the computer
+
+    unsigned char irq = isr - 32;
+    switch(irq) {
+        default:
+            printf("unhandled irq\n");
+            printf("IRQ: %d\n", irq);
+            PIC_sendEOI(irq);
+            break;
+    }
 }
 
 void idt_set_descriptor(uint8_t vector, void* isr, uint8_t flags) {
