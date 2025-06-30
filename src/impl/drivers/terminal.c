@@ -44,6 +44,10 @@ void vga_set_cursor(uint8_t row, uint8_t column) {
     outb(CURSOR_DATA_REGISTER, (uint8_t)((pos >> 8) & 0xFF));
 }
 
+void terminal_update_cursor() {
+    vga_set_cursor(terminal_row, terminal_column);
+}
+
 void terminal_putentryat(char c, uint8_t color, size_t x, size_t y) {
 	const size_t index = y * VGA_WIDTH + x;
 	terminal_buffer[index] = vga_entry(c, color);
@@ -56,12 +60,24 @@ void terminal_putchar(char c) {
         if (terminal_row == VGA_HEIGHT) {
             //terminal_scroll();
         }
-        vga_set_cursor(terminal_row, terminal_column);
         return;
     } else if (c == '\b') {
-        terminal_column--;
+        if (terminal_column > 0) {
+            terminal_column--;
+        } else if (terminal_row > 0) {
+            terminal_row--;
+            terminal_column = VGA_WIDTH - 1;
+        } else {
+            // Already at (0,0), nothing to backspace
+            return;
+        }
+
         terminal_putentryat(' ', terminal_color, terminal_column, terminal_row);
-        vga_set_cursor(terminal_row, terminal_column);
+        return;
+    } else if (c == '\t') {
+        for (int i = 0; i < 4; i++) {
+            terminal_column++;
+        }
         return;
     }
 
@@ -74,8 +90,6 @@ void terminal_putchar(char c) {
             //terminal_scroll();
         }
     }
-
-    vga_set_cursor(terminal_row, terminal_column);
 }
 
 void terminal_write(const char* data, size_t size) {
