@@ -24,6 +24,12 @@ enum vga_color {
 #define VGA_HEIGHT  26
 #define VGA_MEMORY  0xB8000
 
+#define CURSOR_INDEX_REGISTER 0x3D4
+#define CURSOR_DATA_REGISTER 0x3D5
+
+#define CURSOR_LOW_BYTE 0x0F
+#define CURSOR_HIGH_BYTE 0x0E
+
 void terminal_initialize(void);
 void terminal_writestring(const char* data);
 void terminal_write(const char* data, size_t size);
