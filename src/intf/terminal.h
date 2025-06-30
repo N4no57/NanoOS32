@@ -30,6 +30,8 @@ enum vga_color {
 #define CURSOR_LOW_BYTE 0x0F
 #define CURSOR_HIGH_BYTE 0x0E
 
+#define TAB_SIZE 4
+
 void terminal_initialize(void);
 void terminal_writestring(const char* data);
 void terminal_write(const char* data, size_t size);

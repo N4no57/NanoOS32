@@ -75,7 +75,7 @@ void terminal_putchar(char c) {
         terminal_putentryat(' ', terminal_color, terminal_column, terminal_row);
         return;
     } else if (c == '\t') {
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < TAB_SIZE; i++) {
             terminal_column++;
         }
         return;
