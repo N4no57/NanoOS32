@@ -5,6 +5,7 @@
 #include <idt.h>
 #include <pic.h>
 #include <pit.h>
+#include <string.h>
 
 /* Check if the compiler thinks you are targeting the wrong operating system. */
 #if defined(__linux__)
@@ -20,12 +21,34 @@ void kernel_main(void) {
 	idt_init();
 	PIC_remap(PIC1, PIC2);
 
-	while (1) {
-		if (read_ptr != write_ptr) {
-        	char c = input_buff[read_ptr++];
+	printf("Welcome to ShitOS\n");
 
-			terminal_putchar(c);
-			terminal_update_cursor();
-		}
-	}
+	while (1) {
+        terminal_writestring("> ");
+
+        char line[128];
+        size_t len = 0;
+
+        while (1) {
+            char c = getchar(); // blocks until input
+            if (c == '\n') break;
+
+            if (len < sizeof(line) - 1) {
+                line[len++] = c;
+                terminal_putchar(c); // echo here
+				terminal_update_cursor();
+            }
+        }
+
+        line[len] = '\0';
+
+        // process command
+        if (strcmp(line, "hello") == 0) {
+            terminal_writestring("\nHi there!\n");
+        } else if (strcmp(line, "exit()") == 0) { 
+			return;
+		} else {
+            terminal_writestring("\nUnknown command\n");
+        }
+    }
 }
