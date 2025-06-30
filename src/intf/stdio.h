@@ -2,6 +2,7 @@
 #define STDIO_H
 
 int printf(const char* _Format, ...);
+int getchar(void);
 
 static inline unsigned char inb(unsigned short port) {
     unsigned char ret;
