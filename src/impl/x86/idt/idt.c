@@ -1,5 +1,6 @@
 #include <idt.h>
 #include <pic.h>
+#include <pit.h>
 #include <stdbool.h>
 #include <stdio.h>
 
@@ -25,6 +26,10 @@ void interrupt_handler(unsigned char isr) {
 
     unsigned char irq = isr - 32;
     switch(irq) {
+        case 0:
+            pit_interrupt_handler();
+            PIC_sendEOI(irq);
+            break;
         default:
             printf("unhandled irq\n");
             printf("IRQ: %d\n", irq);
