@@ -2,6 +2,7 @@
 #include <stddef.h>
 #include <terminal.h>
 #include <string.h>
+#include <stdio.h>
 
 static inline uint8_t vga_entry_color(enum vga_color fg, enum vga_color bg)  {
 	return fg | bg << 4;
@@ -33,6 +34,16 @@ void terminal_setcolor(uint8_t color) {
 	terminal_color = color;
 }
 
+void vga_set_cursor(uint8_t row, uint8_t column) {
+    uint16_t pos = row * VGA_WIDTH + column;
+
+    outb(CURSOR_INDEX_REGISTER, CURSOR_LOW_BYTE);
+    outb(CURSOR_DATA_REGISTER, (uint8_t)(pos & 0xFF));
+
+    outb(CURSOR_INDEX_REGISTER, CURSOR_HIGH_BYTE);
+    outb(CURSOR_DATA_REGISTER, (uint8_t)((pos >> 8) & 0xFF));
+}
+
 void terminal_putentryat(char c, uint8_t color, size_t x, size_t y) {
 	const size_t index = y * VGA_WIDTH + x;
 	terminal_buffer[index] = vga_entry(c, color);
@@ -45,6 +56,12 @@ void terminal_putchar(char c) {
         if (terminal_row == VGA_HEIGHT) {
             //terminal_scroll();
         }
+        vga_set_cursor(terminal_row, terminal_column);
+        return;
+    } else if (c == '\b') {
+        terminal_column--;
+        terminal_putentryat(' ', terminal_color, terminal_column, terminal_row);
+        vga_set_cursor(terminal_row, terminal_column);
         return;
     }
 
@@ -57,6 +74,8 @@ void terminal_putchar(char c) {
             //terminal_scroll();
         }
     }
+
+    vga_set_cursor(terminal_row, terminal_column);
 }
 
 void terminal_write(const char* data, size_t size) {

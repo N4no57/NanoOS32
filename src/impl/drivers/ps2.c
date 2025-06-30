@@ -2,6 +2,10 @@
 #include <terminal.h>
 #include <stdio.h>
 
+volatile unsigned char input_buff[256];
+volatile unsigned char read_ptr = 0;
+volatile unsigned char write_ptr = 0;
+
 const unsigned char scancode_table[256] = {
     0,  27, '1','2','3','4','5','6','7','8','9','0','-','=', '\b', /* 0x0–0xE */
     '\t','q','w','e','r','t','y','u','i','o','p','[',']','\n',     /* 0xF–0x1C */
@@ -15,8 +19,6 @@ void keyboard_interrupt_handler() {
 
     if (scancode > 127) return;
 
-    char c = scancode_table[scancode];
-    if (c) {
-        terminal_putchar(c);
-    }
+    input_buff[write_ptr] = scancode_table[scancode];
+    write_ptr++;
 }
