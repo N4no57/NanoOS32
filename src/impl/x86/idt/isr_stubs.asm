@@ -3,17 +3,21 @@ extern interrupt_handler
 
 %macro isr_err_stub 1
 isr_stub_%+%1:
+    pushad
     push %1
     call interrupt_handler
     add esp, 4
+    popad
     iret 
 %endmacro
 
 %macro isr_no_err_stub 1
 isr_stub_%+%1:
+    pushad
     push %1
     call interrupt_handler
     add esp, 4
+    popad
     iret
 %endmacro
 
