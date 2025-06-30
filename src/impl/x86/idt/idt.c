@@ -1,6 +1,7 @@
 #include <idt.h>
 #include <pic.h>
 #include <pit.h>
+#include <ps2.h>
 #include <stdbool.h>
 #include <stdio.h>
 
@@ -28,6 +29,10 @@ void interrupt_handler(unsigned char isr) {
     switch(irq) {
         case 0:
             pit_interrupt_handler();
+            PIC_sendEOI(irq);
+            break;
+        case 1:
+            keyboard_interrupt_handler();
             PIC_sendEOI(irq);
             break;
         default:
