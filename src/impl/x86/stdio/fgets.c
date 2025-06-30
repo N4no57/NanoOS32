@@ -16,6 +16,9 @@ char *fgets(char *buffer, size_t max_len) {
                 len--;
                 terminal_putchar(c);
             }
+        } else if (c == '\t') {
+            buffer[len+=TAB_SIZE] = c;
+            terminal_putchar(c);
         } else if (c >= 32 && c < 127) { // printable chars
             buffer[len++] = c;
             terminal_putchar(c);
