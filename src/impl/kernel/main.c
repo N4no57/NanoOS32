@@ -23,8 +23,9 @@ void kernel_main(void) {
 	while (1) {
 		if (read_ptr != write_ptr) {
         	char c = input_buff[read_ptr++];
-			
+
 			terminal_putchar(c);
+			terminal_update_cursor();
 		}
 	}
 }
