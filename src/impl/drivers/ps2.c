@@ -2,21 +2,21 @@
 #include <terminal.h>
 #include <stdio.h>
 
+const unsigned char scancode_table[256] = {
+    0,  27, '1','2','3','4','5','6','7','8','9','0','-','=', '\b', /* 0x0–0xE */
+    '\t','q','w','e','r','t','y','u','i','o','p','[',']','\n',     /* 0xF–0x1C */
+    0,  'a','s','d','f','g','h','j','k','l',';','\'','`',         /* 0x1D–0x29 */
+    0,  '\\','z','x','c','v','b','n','m',',','.','/',0,           /* 0x2A–0x35 */
+    '*', 0,  ' ', 0, 0, 0, 0, 0, 0, 0,                             /* 0x36–0x3F */
+};
+
 void keyboard_interrupt_handler() {
-    unsigned char input = inb(0x60);
-    switch (input) {
-        case 0x10: terminal_putchar('q'); break;
-        case 0x11: terminal_putchar('w'); break;
-        case 0x12: terminal_putchar('e'); break;
-        case 0x13: terminal_putchar('r'); break;
-        case 0x14: terminal_putchar('t'); break;
-        case 0x15: terminal_putchar('y'); break;
-        case 0x16: terminal_putchar('u'); break;
-        case 0x17: terminal_putchar('i'); break;
-        case 0x18: terminal_putchar('o'); break;
-        case 0x19: terminal_putchar('p'); break;
-        case 0x1C: terminal_putchar('\n'); break;
-        case 0x1E: terminal_putchar('a'); break;
+    unsigned char scancode = inb(0x60);
+
+    if (scancode > 127) return;
+
+    char c = scancode_table[scancode];
+    if (c) {
+        terminal_putchar(c);
     }
-    return;
 }
