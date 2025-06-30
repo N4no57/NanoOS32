@@ -27,28 +27,16 @@ void kernel_main(void) {
         terminal_writestring("> ");
 
         char line[128];
-        size_t len = 0;
-
-        while (1) {
-            char c = getchar(); // blocks until input
-            if (c == '\n') break;
-
-            if (len < sizeof(line) - 1) {
-                line[len++] = c;
-                terminal_putchar(c); // echo here
-				terminal_update_cursor();
-            }
-        }
-
-        line[len] = '\0';
+        
+        fgets(line, 128);
 
         // process command
-        if (strcmp(line, "hello") == 0) {
-            terminal_writestring("\nHi there!\n");
-        } else if (strcmp(line, "exit()") == 0) { 
-			return;
+        if (strcmp(line, "help\n") == 0) {
+            terminal_writestring("What the fuck do you want me to do?\nI've got like no code to do jack shit.\n");
+        } else if (strcmp(line, "fuck u\n") == 0) {
+            terminal_writestring("fuck u too\n");
 		} else {
-            terminal_writestring("\nUnknown command\n");
+            terminal_writestring("Unknown command\n");
         }
     }
 }

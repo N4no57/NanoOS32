@@ -1,8 +1,11 @@
 #ifndef STDIO_H
 #define STDIO_H
 
+#include <stddef.h>
+
 int printf(const char* _Format, ...);
 int getchar(void);
+char *fgets(char *buffer, size_t max_len);
 
 static inline unsigned char inb(unsigned short port) {
     unsigned char ret;
