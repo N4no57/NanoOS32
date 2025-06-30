@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <terminal.h>
 #include <stdlib.h>
+#include <ps2.h>
 #include <idt.h>
 #include <pic.h>
 #include <pit.h>
@@ -19,5 +20,11 @@ void kernel_main(void) {
 	idt_init();
 	PIC_remap(PIC1, PIC2);
 
-	while (1) {}
+	while (1) {
+		if (read_ptr != write_ptr) {
+        	char c = input_buff[read_ptr++];
+			
+			terminal_putchar(c);
+		}
+	}
 }
