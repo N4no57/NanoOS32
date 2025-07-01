@@ -23,14 +23,10 @@ void kernel_main(void) {
 
 	printf("Welcome to ShitOS\n");
 
-    int size = 256;
-    char test_buf[size];
+    char *test = malloc(10);
+    char *test = realloc(test, 5);
 
-    for (int i = 0; i < size; i++) {
-        test_buf[i] = 'a';
-    }
-
-    printf("%s\n", test_buf);
+    free(test);
 
     /*
 	while (1) {
