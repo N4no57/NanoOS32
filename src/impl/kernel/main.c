@@ -24,14 +24,6 @@ void kernel_main(void) {
     kernel_init();
 
 	printf("Welcome to ShitOS\n");
-    
-    int *a = malloc(12*sizeof(int));
-    char *b = malloc(15);
-
-    heap_dump();
-
-    free(a);
-    free(b);
 
 	while (1) {
         terminal_writestring("> ");
@@ -43,7 +35,7 @@ void kernel_main(void) {
         // process command
         if (strcmp(line, "help\n") == 0) {
             terminal_writestring("What do you mean help?\nI don't do anything.\n");
-		} else if (strcmp(line, "help\n") == 0) { 
+		} else if (strcmp(line, "clear\n") == 0) { 
             terminal_clear();
         } else {
             terminal_writestring("Unknown command\n");
