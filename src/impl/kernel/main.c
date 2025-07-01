@@ -26,7 +26,7 @@ void kernel_main(void) {
 	printf("Welcome to ShitOS\n");
 
 	while (1) {
-        terminal_writestring("> ");
+        printf("> ");
 
         char line[128];
         
@@ -34,11 +34,11 @@ void kernel_main(void) {
 
         // process command
         if (strcmp(line, "help\n") == 0) {
-            terminal_writestring("What do you mean help?\nI don't do anything.\n");
+            printf("What do you mean help?\nI don't do anything.\n");
 		} else if (strcmp(line, "clear\n") == 0) { 
             terminal_clear();
         } else {
-            terminal_writestring("Unknown command\n");
+            printf("Unknown command\n");
         }
     }
 }
