@@ -72,7 +72,7 @@ void terminal_putentryat(char c, uint8_t color, size_t x, size_t y) {
 }
 
 void terminal_putchar(char c) {
-    while (terminal_row >= VGA_HEIGHT) {
+    while (terminal_row >= VGA_HEIGHT-1) {
         terminal_scroll();
         terminal_row--;
     }
@@ -110,11 +110,6 @@ void terminal_putchar(char c) {
     if (terminal_column >= VGA_WIDTH) {
         terminal_column = 0;
         terminal_row++;
-    }
-
-    while (terminal_row >= VGA_HEIGHT) {
-        terminal_scroll();
-        terminal_row--;
     }
 }
 
