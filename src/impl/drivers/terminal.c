@@ -24,6 +24,9 @@ void terminal_clear() {
 			terminal_buffer[index] = vga_entry(' ', terminal_color);
 		}
 	}
+
+    terminal_row = 0;
+    terminal_column = 0;
 }
 
 void terminal_initialize(void) {
