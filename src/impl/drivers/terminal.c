@@ -45,7 +45,17 @@ void vga_set_cursor(uint8_t row, uint8_t column) {
 }
 
 void terminal_scroll() {
-    
+    for (int row = 1; row < VGA_HEIGHT; ++row) {
+        for (int col = 0; col < VGA_WIDTH; ++col) {
+            terminal_buffer[(row - 1) * VGA_WIDTH + col] = terminal_buffer[row * VGA_WIDTH + col];
+        }
+    }
+
+    // Clear the last line
+    uint16_t blank = ' ' | (0x07 << 8);  // space char with light grey on black
+    for (int col = 0; col < VGA_WIDTH; ++col) {
+        terminal_buffer[(VGA_HEIGHT - 1) * VGA_WIDTH + col] = blank;
+    }
 }
 
 void terminal_update_cursor() {
@@ -62,7 +72,7 @@ void terminal_putchar(char c) {
         terminal_row++;
         terminal_column = 0;
         if (terminal_row == VGA_HEIGHT) {
-            //terminal_scroll();
+            terminal_scroll();
         }
         return;
     } else if (c == '\b') {
@@ -91,7 +101,7 @@ void terminal_putchar(char c) {
         terminal_column = 0;
         terminal_row++;
         if (terminal_row == VGA_HEIGHT) {
-            //terminal_scroll();
+            terminal_scroll();
         }
     }
 }
