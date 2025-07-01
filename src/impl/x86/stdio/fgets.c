@@ -17,8 +17,12 @@ char *fgets(char *buffer, size_t max_len) {
                 terminal_putchar(c);
             }
         } else if (c == '\t') {
-            buffer[len+=TAB_SIZE] = c;
-            terminal_putchar(c);
+            if (len + TAB_SIZE < max_len) {
+                for (int i = 0; i < TAB_SIZE; i++) {
+                    buffer[len++] = ' ';
+                }
+                terminal_putchar('\t');
+            }
         } else if (c >= 32 && c < 127) { // printable chars
             buffer[len++] = c;
             terminal_putchar(c);

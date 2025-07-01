@@ -33,7 +33,6 @@ void kernel_main(void) {
     free(a);
     free(b);
 
-    /*
 	while (1) {
         terminal_writestring("> ");
 
@@ -48,5 +47,4 @@ void kernel_main(void) {
             terminal_writestring("Unknown command\n");
         }
     }
-    */
 }
