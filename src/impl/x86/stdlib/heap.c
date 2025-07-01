@@ -224,5 +224,15 @@ void heap_dump() {
 
     legacy_printf("===   Heap Dump   ===\n");
 
+    while (chunk) {
+        uintptr_t chunk_addr = (uintptr_t)chunk;
+        uintptr_t usr_ptr = chunk_addr + sizeof(struct heapchunk_t);
+        legacy_printf("Chunk %d @ %p\n", index, (void*)chunk_addr);
+        legacy_printf("   Size    : %d bytes\n", chunk->size);
+        legacy_printf("---------------------\n");
+
+        chunk = chunk->next;
+        index++;
+    }
     legacy_printf("=== End Heap Dump ===\n");
 }
