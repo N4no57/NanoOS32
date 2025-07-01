@@ -71,8 +71,9 @@ void terminal_putchar(char c) {
     if (c == '\n') {
         terminal_row++;
         terminal_column = 0;
-        if (terminal_row == VGA_HEIGHT) {
+        while (terminal_row >= VGA_HEIGHT) {
             terminal_scroll();
+            terminal_row--;
         }
         return;
     } else if (c == '\b') {
@@ -89,20 +90,31 @@ void terminal_putchar(char c) {
         terminal_putentryat(' ', terminal_color, terminal_column, terminal_row);
         return;
     } else if (c == '\t') {
-        for (int i = 0; i < TAB_SIZE; i++) {
-            terminal_column++;
+        terminal_column = (terminal_column + TAB_SIZE) & ~(TAB_SIZE - 1);
+        if (terminal_column >= VGA_WIDTH) {
+            terminal_column = 0;
+            terminal_row++;
         }
+
+        while (terminal_row >= VGA_HEIGHT) {
+            terminal_scroll();
+            terminal_row--;
+        }
+
         return;
     }
 
     terminal_putentryat(c, terminal_color, terminal_column, terminal_row);
 
-    if (++terminal_column == VGA_WIDTH) {
+    terminal_column++;
+    if (terminal_column >= VGA_WIDTH) {
         terminal_column = 0;
         terminal_row++;
-        if (terminal_row == VGA_HEIGHT) {
-            terminal_scroll();
-        }
+    }
+
+    while (terminal_row >= VGA_HEIGHT) {
+        terminal_scroll();
+        terminal_row--;
     }
 }
 
