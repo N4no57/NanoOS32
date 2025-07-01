@@ -12,14 +12,16 @@
 #error "You are not using a cross-compiler, you will most certainly run into trouble"
 #endif
 
-
-void kernel_main(void) {
-	/* Initialise kernel code */
-	terminal_initialize();
+void kernel_init(void) {
+    terminal_initialize();
 	heap_init();
 	set_frequency(11932);
 	idt_init();
 	PIC_remap(PIC1, PIC2);
+}
+
+void kernel_main(void) {
+    kernel_init();
 
 	printf("Welcome to ShitOS\n");
     
