@@ -24,7 +24,7 @@ void kernel_main(void) {
 	printf("Welcome to ShitOS\n");
 
     char *test = malloc(10);
-    char *test = realloc(test, 5);
+    test = realloc(test, 5);
 
     free(test);
 
