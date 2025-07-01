@@ -44,6 +44,10 @@ void vga_set_cursor(uint8_t row, uint8_t column) {
     outb(CURSOR_DATA_REGISTER, (uint8_t)((pos >> 8) & 0xFF));
 }
 
+void terminal_scroll() {
+    
+}
+
 void terminal_update_cursor() {
     vga_set_cursor(terminal_row, terminal_column);
 }
