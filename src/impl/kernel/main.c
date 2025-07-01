@@ -22,6 +22,14 @@ void kernel_main(void) {
 	PIC_remap(PIC1, PIC2);
 
 	printf("Welcome to ShitOS\n");
+    
+    int *a = malloc(12*sizeof(int));
+    char *b = malloc(15);
+
+    heap_dump();
+
+    free(a);
+    free(b);
 
     /*
 	while (1) {
