@@ -23,7 +23,6 @@ void kernel_main(void) {
 
 	printf("Welcome to ShitOS\n");
 
-    /*
 	while (1) {
         terminal_writestring("> ");
 
@@ -38,5 +37,4 @@ void kernel_main(void) {
             terminal_writestring("Unknown command\n");
         }
     }
-    */
 }
