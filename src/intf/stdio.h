@@ -4,6 +4,7 @@
 #include <stddef.h>
 
 int printf(const char* _Format, ...);
+int legacy_printf(const char* _Format, ...);
 int getchar(void);
 char *fgets(char *buffer, size_t max_len);
 
