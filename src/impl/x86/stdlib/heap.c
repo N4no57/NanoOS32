@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 extern uint8_t heap_start;
 extern uint8_t heap_end;
@@ -35,6 +36,10 @@ void* malloc(size_t size) {
     struct heapchunk_t *chunk = heap.start;
     struct heapchunk_t *prev = NULL;
 
+    if (debug_malloc) {
+        printf("[malloc]     Requested size: %d\n", size);
+    }
+
     //check if the heap has enough space
     while (chunk != NULL) {
         if (!chunk->inuse && chunk->size >= size) {
@@ -45,15 +50,24 @@ void* malloc(size_t size) {
     }
 
     if (chunk == NULL) {
-        printf("No suitable chunk\ntoo bad, so sad, get the FUCK OUTTA HERE\n");
+        if (debug_malloc) {
+            printf("[malloc] No suitable chunk found. Heap exhausted.\n");
+            printf("[malloc] too bad, so sad, get the FUCK OUTTA HERE\n");
+        }
         return NULL;
     }
 
-    if (debug_malloc) printf("Found Chunk: %p\n", chunk);
-    if (debug_malloc) printf("Initial chunk size: %d\n", chunk->size);
+    if (debug_malloc) {
+        printf("[malloc]     Found suitable chunk at %p\n", (void*)chunk);
+        printf("[malloc]     Chunk size: %d\n", chunk->size);
+        printf("[malloc]     In use?     %s\n", chunk->inuse ? "yes" : "no");
+    }
 
     size_t leftover = chunk->size - size;
-    if (debug_malloc) printf("Leftover heap: %d\n", leftover);
+    if (debug_malloc) {
+        printf("[malloc]     Leftover space after allocation: %d\n", leftover);
+    }
+
     if (leftover > sizeof(struct heapchunk_t) + 4) {  // leave room for a new chunk
         struct heapchunk_t *new_chunk = (struct heapchunk_t *)((char *)chunk + sizeof(struct heapchunk_t) + size);
         new_chunk->size = leftover - sizeof(struct heapchunk_t);
@@ -62,11 +76,19 @@ void* malloc(size_t size) {
 
         chunk->next = new_chunk;
         chunk->size = size;
+
+        if (debug_malloc) {
+            printf("[malloc]     Splitting chunk:\n");
+            printf("           - Allocated chunk size: %d\n", chunk->size);
+            printf("           - New free chunk at %p, size: %d\n", (void*)new_chunk, new_chunk->size);
+        }
     }
-    if (debug_malloc) printf("chunk->size: %d\n", chunk->size);
-    if (debug_malloc) printf("new chunk size: %d\n", chunk->next->size);
 
     chunk->inuse = true;
+
+    if (debug_malloc) {
+        printf("[malloc]     Allocation successful! Returning user pointer: %p\n\n", (char *)chunk + sizeof(struct heapchunk_t));
+    }
 
     return (char *)chunk + sizeof(struct heapchunk_t);
 }
@@ -92,4 +114,106 @@ void free(void* ptr) {
     coalesce_chunk();
 
     return;
+}
+
+static bool debug_realloc = true;
+
+void* extendChunkInPlace(void* ptr, size_t new_size, struct heapchunk_t *old_chunk) { // TODO add return statements
+    if (debug_realloc) {
+        printf("[extendChunkInPlace] Attempting in-place extension...\n");
+        printf("[extendChunkInPlace] Current size: %d, Requested size: %d\n", old_chunk->size, new_size);
+    }
+
+    if (old_chunk->next->inuse == false) {
+        size_t extra_space_required = new_size-old_chunk->size; //* get the space the chunk needs to be extended by
+
+        if (debug_realloc) {
+            printf("[extendChunkInPlace] Next chunk is free. Extra space required: %d\n", extra_space_required);
+            printf("[extendChunkInPlace] Next chunk size: %d\n", old_chunk->next->size);
+        }
+
+        if (old_chunk->next->size >= extra_space_required + sizeof(struct heapchunk_t)) { //* check if free chunk has enough space
+            struct heapchunk_t* next = old_chunk->next;
+            struct heapchunk_t* split = (struct heapchunk_t*)((char *)next + extra_space_required);
+
+            split->size = next->size - extra_space_required - sizeof(struct heapchunk_t);
+            split->inuse = false;
+            split->next = next->next;
+
+            old_chunk->size += extra_space_required;
+            old_chunk->next = split;
+
+            if (debug_realloc) {
+                printf("[extendChunkInPlace] In-place extension successful.\n");
+                printf("[extendChunkInPlace] New size: %d\n", old_chunk->size);
+            }
+
+            return (char *)old_chunk + sizeof(struct heapchunk_t);
+        }
+    }
+
+    if (debug_realloc) {
+        printf("[extendChunkInPlace] In-place extension failed.\n");
+    }
+
+    return NULL;
+}
+
+void* realloc(void *ptr, size_t new_size) {
+    //* if ptr == NULL malloc() new block and return
+    if (!ptr) {
+        if (debug_realloc) {
+            printf("[realloc] NULL ptr passed in, calling malloc(%d).\n", new_size);
+        }
+        return malloc(new_size);
+    }
+
+    struct heapchunk_t *old_chunk = (struct heapchunk_t *)((char *)ptr - sizeof(struct heapchunk_t));
+    //* if new size is larger the current size
+    if (old_chunk->size < new_size) {
+        if (debug_realloc) {
+            printf("[realloc] Requesting growth: current size %d, new size %d.\n", old_chunk->size, new_size);
+        }
+
+        //* attempt to extend in place
+        if (extendChunkInPlace(ptr, new_size, old_chunk)) {
+            if (debug_realloc) {
+                printf("[realloc] Extended in place.\n");
+            }
+
+            return ptr; // In-place extension successful
+        }
+
+        if (debug_realloc) {
+            printf("[realloc] Could not extend in place. Allocating new block.\n");
+        }
+
+        //* otherwise allocate completely new block
+        void* new_ptr = malloc(new_size);
+        if (!new_ptr) {
+            if (debug_realloc) {
+                printf("[realloc] malloc() failed for size %d.\n", new_size);
+            }
+            return NULL;
+        }
+        memcpy(new_ptr, ptr, (old_chunk->size < new_size ? old_chunk->size : new_size));
+        free(ptr); //* free old block and coalesce heap
+
+        if (debug_realloc) {
+            printf("[realloc] Copied data to new block and freed old one.\n");
+        }
+
+        return new_ptr; //* return pointer to new block
+    }
+
+    // TODO
+    //* if new size is smaller
+    //* shrink block in place
+
+    if (debug_realloc) {
+        printf("[realloc] Shrinking not implemented yet.\n");
+    }
+
+    //* placeholder return until chunk shrinking implemented
+    return NULL;
 }
