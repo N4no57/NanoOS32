@@ -32,6 +32,14 @@ void kernel_main(void) {
 
     printf("%s\n", test_buf);
 
+    int *a = malloc(12*sizeof(int));
+    char *b = malloc(15);
+
+    heap_dump();
+
+    free(a);
+    free(b);
+
     /*
 	while (1) {
         terminal_writestring("> ");
