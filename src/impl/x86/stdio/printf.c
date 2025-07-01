@@ -7,9 +7,24 @@
 int printf(const char* _Format, ...) {
     va_list args;
     va_start(args, _Format);
-    char out_str[256]; // ! 256 character size, may cause problems down the line for bigger print jobs
+    
+    int buf_size = 64;
+    char* out_str = malloc(buf_size);
+    if (!out_str) return -1;
+
     int out_idx = 0;
     int i = 0;
+
+    #define APPEND_CHAR(c) \
+        do { \
+            if (out_idx + 1 >= buf_size) { \
+                buf_size *= 2; \
+                char* temp = realloc(out_str, buf_size); \
+                if (!temp) { free(out_str); return -1; } \
+                out_str = temp; \
+            } \
+            out_str[out_idx++] = (c); \
+        } while (0)
 
     do {
         if(_Format[i] != '%') { // check if the current character is not the format specifier
@@ -26,46 +41,38 @@ int printf(const char* _Format, ...) {
                     char num_buf[20]; // create a 20 digit buffer (big enough to handle 64-bit mode)
                     int num_idx = 0;
                     itoa(val, num_buf); // convert the integer to its ascii counterpart
-                    do { // loop through the ascii integer to append to the out_str
-                        if (num_buf[num_idx] == '\0')
-                            break;
-                        out_str[out_idx++] = num_buf[num_idx];
-                    } while (num_buf[num_idx++] != '\0');
+                    for (int j = 0; num_buf[j] != '\0'; ++j) {
+                        APPEND_CHAR(num_buf[j]);
+                    }
                     break;
                 case 'c': // character
                     val = va_arg(args, int);
-                    out_str[out_idx++] = (char)val;
+                    APPEND_CHAR(val);
                     break;
                 case 's': // string
                     string = va_arg(args, char*); // get the string
-                    int string_idx = 0;
-                    do { // loop through string to append it to the out_str
-                        if (string[string_idx] == '\0')
-                            break;
-                        out_str[out_idx++] = string[string_idx];
-                    } while (string[string_idx++] != '\0');
+                    for (int j = 0; string[j] != '\0'; ++j) {
+                        APPEND_CHAR(string[j]);
+                    }
                     break;
                 case 'p': // pointer
                     void* ptr = va_arg(args, void*);
-                    //out_str[out_idx++] = "0"; // hardcoded "0x" for hex specification
-                    //out_str[out_idx++] = "x";
-                    // current non hex version
-                    // TODO: make this hex
-                    char ptr_buff[20]; // create a 20 digit buffer (big enough to handle 64-bit mode)
-                    int ptr_idx = 0;
-                    itoa((uintptr_t)ptr, ptr_buff); // convert the integer to its ascii counterpart
-                    do { // loop through the ascii integer to append to the out_str
-                        if (ptr_buff[ptr_idx] == '\0')
-                            break;
-                        out_str[out_idx++] = ptr_buff[ptr_idx];
-                    } while (ptr_buff[ptr_idx++] != '\0');
+                    uintptr_t addr = (uintptr_t)ptr;
+                    char ptr_buf[20];
+                    itoa(addr, ptr_buf); // TODO: convert to hex format
+                    for (int j = 0; ptr_buf[j] != '\0'; ++j) {
+                        APPEND_CHAR(ptr_buf[j]);
+                    }
                     break;
                 default:
+                    free(out_str);
                     return 1; // throw error, dealing with unknow specifier
             }
         }
     } while (_Format[i++] != '\0');
+    APPEND_CHAR('\0'); // Null-terminate the string
     terminal_writestring(out_str);
 
+    free(out_str);
     return 0;
 }
