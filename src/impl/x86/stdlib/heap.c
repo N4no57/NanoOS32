@@ -214,6 +214,27 @@ void* realloc(void *ptr, size_t new_size) {
         legacy_printf("[realloc] Shrinking not implemented yet.\n");
     }
 
+    //* allocate smaller chunk
+    size_t leftover = old_chunk->size-new_size;
+    if (leftover < sizeof(struct heapchunk_t) + 4) {
+        void* new_ptr = malloc(new_size);
+        if (!new_ptr) {
+            if (debug_realloc) {
+                legacy_printf("[realloc] malloc() failed for size %d.\n", new_size);
+            }
+            return NULL;
+        }
+        
+        memcpy(new_ptr, ptr, (old_chunk->size > new_size ? new_size : old_chunk->size));
+        free(ptr); //* free old block and coalesce heap
+
+        if (debug_realloc) {
+            legacy_printf("[realloc] Copied data to new block and freed old one.\n");
+        }
+
+        return new_ptr; //* return pointer to new block
+    }
+
     //* placeholder return until chunk shrinking implemented
     return NULL;
 }
