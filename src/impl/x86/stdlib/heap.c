@@ -217,3 +217,12 @@ void* realloc(void *ptr, size_t new_size) {
     //* placeholder return until chunk shrinking implemented
     return NULL;
 }
+
+void heap_dump() {
+    struct heapchunk_t *chunk = heap.start;
+    int index = 0;
+
+    legacy_printf("===   Heap Dump   ===\n");
+
+    legacy_printf("=== End Heap Dump ===\n");
+}
