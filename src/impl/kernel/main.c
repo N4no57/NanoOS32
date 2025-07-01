@@ -23,15 +23,6 @@ void kernel_main(void) {
 
 	printf("Welcome to ShitOS\n");
 
-    int size = 256;
-    char test_buf[size];
-
-    for (int i = 0; i < size; i++) {
-        test_buf[i] = 'a';
-    }
-
-    printf("%s\n", test_buf);
-
     /*
 	while (1) {
         terminal_writestring("> ");
