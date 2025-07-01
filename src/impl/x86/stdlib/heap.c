@@ -229,6 +229,10 @@ void heap_dump() {
         uintptr_t usr_ptr = chunk_addr + sizeof(struct heapchunk_t);
         legacy_printf("Chunk %d @ %p\n", index, (void*)chunk_addr);
         legacy_printf("   Size    : %d bytes\n", chunk->size);
+        legacy_printf("   In Use  : %s\n", chunk->inuse ? "yes" : "no");
+        legacy_printf("   Next    : %p\n", (void*)chunk->next);
+        legacy_printf("   User Ptr: %p\n", (void*)usr_ptr);
+        legacy_printf("   End     : %p\n", (void*)(usr_ptr + chunk->size));
         legacy_printf("---------------------\n");
 
         chunk = chunk->next;
