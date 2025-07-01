@@ -43,7 +43,9 @@ void kernel_main(void) {
         // process command
         if (strcmp(line, "help\n") == 0) {
             terminal_writestring("What do you mean help?\nI don't do anything.\n");
-		} else {
+		} else if (strcmp(line, "help\n") == 0) { 
+            terminal_clear();
+        } else {
             terminal_writestring("Unknown command\n");
         }
     }
