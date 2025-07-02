@@ -81,6 +81,10 @@ void terminal_update_cursor() {
     vga_set_cursor(terminal_row, terminal_column);
 }
 
+void terminal_render_view() {
+    
+}
+
 void terminal_scroll_up(void) {
     if (scroll_offset < scroll_back_ln - VGA_HEIGHT) {
         scroll_offset++;
