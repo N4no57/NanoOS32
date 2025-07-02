@@ -46,6 +46,7 @@ void terminal_initialize(void) {
 	terminal_column = 0;
 	terminal_color = vga_entry_color(VGA_COLOR_LIGHT_GREY, VGA_COLOR_BLACK);
 	
+    terminal_clear();
 }
 
 void terminal_setcolor(uint8_t color) {
@@ -78,6 +79,20 @@ void terminal_scroll() {
 
 void terminal_update_cursor() {
     vga_set_cursor(terminal_row, terminal_column);
+}
+
+void terminal_scroll_up(void) {
+    if (scroll_offset < scroll_back_ln - VGA_HEIGHT) {
+        scroll_offset++;
+        terminal_render_view();
+    }
+}
+
+void terminal_scroll_down(void) {
+    if (scroll_offset > 0) {
+        scroll_offset--;
+        terminal_render_view();
+    }
 }
 
 void terminal_putentryat(char c, uint8_t color, size_t x, size_t y) {
