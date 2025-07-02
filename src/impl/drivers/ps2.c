@@ -89,7 +89,7 @@ void parse_input_buffer() {
 
         unsigned char ascii = shift_pressed ? scancode_shift_table[scancode] : scancode_table[scancode];
         if (ascii) {
-            parsed_buff[parsed_write_ptr++] == ascii;
+            parsed_buff[parsed_write_ptr++] = ascii;
         }
     }
 }
