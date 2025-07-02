@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include <string.h>
 
+#define MIN_CHUNK_SIZE sizeof(struct heapchunk_t) + 4
+
 extern uint8_t heap_start;
 extern uint8_t heap_end;
 
@@ -220,7 +222,7 @@ void* realloc(void *ptr, size_t new_size) {
 
     // check if there is enough room to split chunk
     size_t leftover = old_chunk->size-new_size;
-    if (leftover >= sizeof(struct heapchunk_t) + 4) {
+    if (leftover >= MIN_CHUNK_SIZE) {
         struct heapchunk_t *new_chunk = (struct heapchunk_t *)((char *)old_chunk + sizeof(struct heapchunk_t) + new_size);
         new_chunk->size = leftover - sizeof(struct heapchunk_t);
         new_chunk->inuse = false;
@@ -230,7 +232,7 @@ void* realloc(void *ptr, size_t new_size) {
         old_chunk->next = new_chunk;
         coalesce_chunk();
         return (char*)old_chunk + sizeof(struct heapchunk_t);
-    } else if (leftover < sizeof(struct heapchunk_t) + 4) {
+    } else if (leftover < MIN_CHUNK_SIZE) {
         void* new_ptr = malloc(new_size);
         if (!new_ptr) {
             if (debug_realloc) {
