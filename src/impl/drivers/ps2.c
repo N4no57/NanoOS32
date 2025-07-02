@@ -3,9 +3,9 @@
 #include <stdio.h>
 
 // raw scancode buffer
-volatile unsigned char input_buff[256];
-volatile unsigned char read_ptr = 0;
-volatile unsigned char write_ptr = 0;
+unsigned char input_buff[256];
+unsigned char read_ptr = 0;
+unsigned char write_ptr = 0;
 
 // parsed input buffer
 volatile unsigned char parsed_buff[256];
@@ -90,15 +90,12 @@ void keyboard_interrupt_handler() {
     unsigned char scancode = inb(0x60);
 
     if (scancode == 0xE0) { // extended scancodes
-        input_buff[write_ptr] = 0xE0;
-        write_ptr++;
+        input_buff[write_ptr++] = 0xE0;
         scancode = inb(0x60);
-        input_buff[write_ptr] = scancode;
-        write_ptr++;
+        input_buff[write_ptr++] = scancode;
         return;
     }
 
     // normal scancodes
-    input_buff[write_ptr] = scancode;
-    write_ptr++;
+    input_buff[write_ptr++] = scancode;
 }
