@@ -17,12 +17,12 @@ typedef struct {
     // TODO
 } File;
 
-extern volatile File stdin;
+extern volatile File* stdin;
 
 int printf(const char* _Format, ...);
 int legacy_printf(const char* _Format, ...);
-int getchar(void);
-char *fgets(char *buffer, size_t max_len);
+int getchar(File file);
+char *fgets(char *buffer, size_t max_len, File file);
 
 static inline unsigned char inb(unsigned short port) {
     unsigned char ret;
