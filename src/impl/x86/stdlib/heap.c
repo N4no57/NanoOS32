@@ -69,7 +69,7 @@ void* malloc(size_t size) {
         legacy_printf("[malloc]     Leftover space after allocation: %d\n", leftover);
     }
 
-    if (leftover > sizeof(struct heapchunk_t) + 4) {  // leave room for a new chunk
+    if (leftover > MIN_CHUNK_SIZE) {  // leave room for a new chunk
         struct heapchunk_t *new_chunk = (struct heapchunk_t *)((char *)chunk + sizeof(struct heapchunk_t) + size);
         new_chunk->size = leftover - sizeof(struct heapchunk_t);
         new_chunk->inuse = false;
