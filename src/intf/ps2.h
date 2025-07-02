@@ -6,5 +6,6 @@ extern volatile unsigned char read_ptr;
 extern volatile unsigned char write_ptr;
 
 void keyboard_interrupt_handler();
+void parse_input_buffer();
 
 #endif
