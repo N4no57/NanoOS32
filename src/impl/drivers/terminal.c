@@ -97,6 +97,17 @@ void terminal_render_view() {
                 terminal_buffer[y * VGA_WIDTH + x] = vga_entry(' ', terminal_color);
             }
         }
+    } else {
+        // compute starting line in scrollback buffer to display
+        size_t start_line = scroll_back_ln - VGA_HEIGHT - scroll_offset;
+
+        for (size_t y = 0; y < VGA_HEIGHT; y++) {
+            for (size_t x = 0; x < VGA_WIDTH; x++) {
+                size_t src_index = (start_line + y) * VGA_WIDTH + x;
+                size_t dst_index = y * VGA_WIDTH + x;
+                terminal_buffer[dst_index] = scroll_back_buffer[src_index];
+            }
+        }
     }
 }
 
@@ -116,8 +127,11 @@ void terminal_scroll_down(void) {
 
 void terminal_putentryat(char c, uint8_t color, size_t x, size_t y) {
 	const size_t index = y * VGA_WIDTH + x;
-	terminal_buffer[index] = vga_entry(c, color);
-    scroll_back_buffer[scroll_back_ln * VGA_WIDTH + x];
+    scroll_back_buffer[scroll_back_ln * VGA_WIDTH + x] = vga_entry(c, color);
+
+    if (scroll_offset == 0 && y < VGA_HEIGHT) {
+        terminal_buffer[index] = vga_entry(c, color);
+    }
 }
 
 void terminal_putchar(char c) {
