@@ -32,6 +32,8 @@ enum vga_color {
 
 #define TAB_SIZE 4
 
+#define SCROLLBACK_MAX_LINES 1024
+
 void terminal_initialize(void);
 void terminal_writestring(const char* data);
 void terminal_write(const char* data, size_t size);
