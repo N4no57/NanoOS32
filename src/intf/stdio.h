@@ -3,6 +3,22 @@
 
 #include <stddef.h>
 
+#define STD_BUF_SIZE 256
+
+typedef struct {
+    char buffer[STD_BUF_SIZE];
+    size_t write_ptr;
+    size_t read_ptr;
+
+    // Methods
+    // TODO
+
+    // Additional fields
+    // TODO
+} File;
+
+extern volatile File stdin;
+
 int printf(const char* _Format, ...);
 int legacy_printf(const char* _Format, ...);
 int getchar(void);
