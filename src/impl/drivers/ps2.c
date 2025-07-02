@@ -2,10 +2,17 @@
 #include <terminal.h>
 #include <stdio.h>
 
+// raw scancode buffer
 volatile unsigned char input_buff[256];
 volatile unsigned char read_ptr = 0;
 volatile unsigned char write_ptr = 0;
 
+// parsed input buffer
+volatile unsigned char parsed_buff[256];
+volatile unsigned char parsed_read_ptr = 0;
+volatile unsigned char parsed_write_ptr = 0;
+
+// lookup tables for parser
 const unsigned char scancode_table[128] = {
     0,  27, '1','2','3','4','5','6','7','8','9','0','-','=', '\b', // 0x0–0xE
     '\t','q','w','e','r','t','y','u','i','o','p','[',']','\n',     // 0xF–0x1C
