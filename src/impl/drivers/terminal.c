@@ -143,6 +143,8 @@ void terminal_putchar(char c) {
     if (c == '\n') {
         terminal_row++;
         terminal_column = 0;
+
+        scroll_back_ln++;
         return;
     } else if (c == '\b') {
         if (terminal_column > 0) {
@@ -162,6 +164,7 @@ void terminal_putchar(char c) {
         if (terminal_column >= VGA_WIDTH) {
             terminal_column = 0;
             terminal_row++;
+            scroll_back_ln++;
         }
 
         return;
