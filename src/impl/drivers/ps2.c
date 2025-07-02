@@ -82,6 +82,8 @@ void parse_input_buffer() {
         // Handle key press
         if (extended) {
             switch (scancode) {
+                case 0x7D: key_event[key_event_write_ptr++] = KEY_PGUP; break;
+                case 0x7A: key_event[key_event_write_ptr++] = KEY_PGDN; break;
                 default: break; // unhandled
             }
             extended = 0;
