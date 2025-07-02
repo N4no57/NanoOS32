@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include <string.h>
 
+#define MIN_CHUNK_SIZE sizeof(struct heapchunk_t) + 4
+
 extern uint8_t heap_start;
 extern uint8_t heap_end;
 
@@ -27,7 +29,6 @@ void heap_init(void) {
     heap.start->size = heap.avail - sizeof(struct heapchunk_t);
     heap.start->inuse = false;
     heap.start->next = NULL;
-    //printf("heap contains, %d bytes\n", heap.avail);
 }
 
 static bool debug_malloc = false;
@@ -68,7 +69,7 @@ void* malloc(size_t size) {
         legacy_printf("[malloc]     Leftover space after allocation: %d\n", leftover);
     }
 
-    if (leftover > sizeof(struct heapchunk_t) + 4) {  // leave room for a new chunk
+    if (leftover > MIN_CHUNK_SIZE) {  // leave room for a new chunk
         struct heapchunk_t *new_chunk = (struct heapchunk_t *)((char *)chunk + sizeof(struct heapchunk_t) + size);
         new_chunk->size = leftover - sizeof(struct heapchunk_t);
         new_chunk->inuse = false;
@@ -160,7 +161,7 @@ void* extendChunkInPlace(void* ptr, size_t new_size, struct heapchunk_t *old_chu
 }
 
 void* realloc(void *ptr, size_t new_size) {
-    //* if ptr == NULL malloc() new block and return
+    // if ptr == NULL malloc() new block and return
     if (!ptr) {
         if (debug_realloc) {
             legacy_printf("[realloc] NULL ptr passed in, calling malloc(%d).\n", new_size);
@@ -169,13 +170,13 @@ void* realloc(void *ptr, size_t new_size) {
     }
 
     struct heapchunk_t *old_chunk = (struct heapchunk_t *)((char *)ptr - sizeof(struct heapchunk_t));
-    //* if new size is larger the current size
+    // if new size is larger the current size
     if (old_chunk->size < new_size) {
         if (debug_realloc) {
             legacy_printf("[realloc] Requesting growth: current size %d, new size %d.\n", old_chunk->size, new_size);
         }
 
-        //* attempt to extend in place
+        // attempt to extend in place
         if (extendChunkInPlace(ptr, new_size, old_chunk)) {
             if (debug_realloc) {
                 legacy_printf("[realloc] Extended in place.\n");
@@ -188,7 +189,7 @@ void* realloc(void *ptr, size_t new_size) {
             legacy_printf("[realloc] Could not extend in place. Allocating new block.\n");
         }
 
-        //* otherwise allocate completely new block
+        // otherwise allocate completely new block
         void* new_ptr = malloc(new_size);
         if (!new_ptr) {
             if (debug_realloc) {
@@ -197,25 +198,56 @@ void* realloc(void *ptr, size_t new_size) {
             return NULL;
         }
         memcpy(new_ptr, ptr, (old_chunk->size < new_size ? old_chunk->size : new_size));
-        free(ptr); //* free old block and coalesce heap
+        free(ptr); // free old block and coalesce heap
 
         if (debug_realloc) {
             legacy_printf("[realloc] Copied data to new block and freed old one.\n");
         }
 
-        return new_ptr; //* return pointer to new block
+        return new_ptr; // return pointer to new block
+    } else if (old_chunk->size > new_size) {
+        if (debug_realloc) {
+            legacy_printf("[realloc] Requesting shrink: current size %d, new size %d.\n", old_chunk->size, new_size);
+        }
+
+        if (debug_realloc) {
+            legacy_printf("[shrinkChunkInPlace] Attempting in-place shrinking...\n");
+            legacy_printf("[shrinkChunkInPlace] Current size: %d, Requested size: %d\n", old_chunk->size, new_size);
+        }
+
+        // check if there is enough room to split chunk
+        size_t leftover = old_chunk->size-new_size;
+        if (leftover > MIN_CHUNK_SIZE) {
+            struct heapchunk_t *new_chunk = (struct heapchunk_t *)((char *)old_chunk + sizeof(struct heapchunk_t) + new_size);
+            new_chunk->size = leftover - sizeof(struct heapchunk_t);
+            new_chunk->inuse = false;
+            new_chunk->next = old_chunk->next;
+
+            old_chunk->size -= leftover;
+            old_chunk->next = new_chunk;
+            coalesce_chunk();
+            return (char*)old_chunk + sizeof(struct heapchunk_t);
+        } else if (leftover < MIN_CHUNK_SIZE) {
+            void* new_ptr = malloc(new_size);
+            if (!new_ptr) {
+                if (debug_realloc) {
+                    legacy_printf("[realloc] malloc() failed for size %d.\n", new_size);
+                }
+                return NULL;
+            }
+            
+            memcpy(new_ptr, ptr, (old_chunk->size > new_size ? new_size : old_chunk->size));
+            free(ptr); // free old block and coalesce heap
+
+            if (debug_realloc) {
+                legacy_printf("[realloc] Copied data to new block and freed old one.\n");
+            }
+
+            return new_ptr; // return pointer to new block
+        }
     }
 
-    // TODO
-    //* if new size is smaller
-    //* shrink block in place
-
-    if (debug_realloc) {
-        legacy_printf("[realloc] Shrinking not implemented yet.\n");
-    }
-
-    //* placeholder return until chunk shrinking implemented
-    return NULL;
+    // if new_size == old_size do nothing
 }
 
 void heap_dump() {
