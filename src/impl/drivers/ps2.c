@@ -11,15 +11,22 @@
 #define KEY_HOME   0x86
 #define KEY_END    0x87
 
+#define CIRCULAR_BUFFER_SIZE 256
+
 // raw scancode buffer
-unsigned char input_buff[256];
+unsigned char input_buff[CIRCULAR_BUFFER_SIZE];
 unsigned char read_ptr = 0;
 unsigned char write_ptr = 0;
 
 // parsed input buffer
-volatile unsigned char parsed_buff[256];
+volatile unsigned char parsed_buff[CIRCULAR_BUFFER_SIZE];
 volatile unsigned char parsed_read_ptr = 0;
 volatile unsigned char parsed_write_ptr = 0;
+
+// key event buffer for non-ascii keys
+volatile unsigned char key_event[CIRCULAR_BUFFER_SIZE];
+volatile unsigned char key_event_read_ptr = 0;
+volatile unsigned char key_event_write_ptr = 0;
 
 // lookup tables for parser
 const unsigned char scancode_table[128] = {
