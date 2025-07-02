@@ -20,7 +20,7 @@ char *fgets(char *buffer, size_t max_len);
 // maintained functions
 int printf(const char* _Format, ...);
 KeyEvent get_key_event();
-void readline(char *buffer, size_t max_len);
+char *readline(char *buffer, size_t max_len);
 
 static inline unsigned char inb(unsigned short port) {
     unsigned char ret;
