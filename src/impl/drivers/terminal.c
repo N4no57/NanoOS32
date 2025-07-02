@@ -82,7 +82,22 @@ void terminal_update_cursor() {
 }
 
 void terminal_render_view() {
-    
+    if (scroll_back_ln < VGA_HEIGHT) {
+        // Not enough lines yet, copy what is available
+        for (size_t y = 0; y < scroll_back_ln; y++) {
+            for (size_t x = 0; x < VGA_WIDTH; x++) {
+                size_t src_index = y * VGA_WIDTH + x;
+                size_t dst_index = y * VGA_WIDTH + x;
+                terminal_buffer[dst_index] = scroll_back_buffer[src_index];
+            }
+        }
+        // Clear remaining lines if any
+        for (size_t y = scroll_back_ln; y < VGA_HEIGHT; y++) {
+            for (size_t x = 0; x < VGA_WIDTH; x++) {
+                terminal_buffer[y * VGA_WIDTH + x] = vga_entry(' ', terminal_color);
+            }
+        }
+    }
 }
 
 void terminal_scroll_up(void) {
