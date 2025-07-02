@@ -24,6 +24,10 @@ const unsigned char scancode_shift_table[128] = {
 
 unsigned char shift_pressed = 0;
 
+void parse_input_buffer() {
+    
+}
+
 // input raw scancode to an input buffer
 void keyboard_interrupt_handler() {
     unsigned char scancode = inb(0x60);
