@@ -15,6 +15,7 @@ static inline uint16_t vga_entry(unsigned char uc, uint8_t color) {
 size_t terminal_row;
 size_t terminal_column;
 size_t scroll_back_ln;
+size_t scroll_offset;
 uint8_t terminal_color;
 uint16_t* terminal_buffer = (uint16_t*)VGA_MEMORY;
 uint16_t scroll_back_buffer[SCROLLBACK_MAX_LINES*VGA_WIDTH];
@@ -37,6 +38,7 @@ void terminal_clear() {
     terminal_row = 0;
     terminal_column = 0;
     scroll_back_ln = 0;
+    scroll_offset = 0;
 }
 
 void terminal_initialize(void) {
