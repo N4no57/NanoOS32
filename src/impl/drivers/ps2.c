@@ -53,21 +53,11 @@ void parse_input_buffer() {
             continue;;
         }
 
-        if (scancode == 0xF0) {
-            break_code = 1;
-            continue;
-        }
-
-        if (break_code) {
-            // Handle key release
-            if (!extended) {
-                if (scancode == 0x12 || scancode == 0x59) { // Left/Right shift
-                    shift_pressed = 0;
-                }
+        // Handle key release
+        if (!extended) {
+            if (scancode == 0xAA || scancode == 0xB6) { // Left/Right shift
+                shift_pressed = 0;
             }
-            break_code = 0;
-            extended = 0;
-            continue;
         }
 
         // Handle key press
@@ -86,6 +76,8 @@ void parse_input_buffer() {
             shift_pressed = 1;
             continue;
         }
+
+        if (scancode > 128) continue;
 
         unsigned char ascii = shift_pressed ? scancode_shift_table[scancode] : scancode_table[scancode];
         if (ascii) {
