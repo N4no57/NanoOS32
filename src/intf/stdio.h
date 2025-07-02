@@ -3,10 +3,13 @@
 
 #include <stddef.h>
 
-int printf(const char* _Format, ...);
+// Legacy functions
 int legacy_printf(const char* _Format, ...);
 int getchar();
 char *fgets(char *buffer, size_t max_len);
+
+// maintained functions
+int printf(const char* _Format, ...);
 
 static inline unsigned char inb(unsigned short port) {
     unsigned char ret;
