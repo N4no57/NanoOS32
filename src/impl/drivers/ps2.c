@@ -29,10 +29,60 @@ const unsigned char scancode_shift_table[128] = {
     0, 0,  ' ', 0, 0, 0, 0, 0, 0, 0,                               // 0x36–0x3F
 };
 
+unsigned char input_avail() {
+    return read_ptr != write_ptr;
+}
+
 unsigned char shift_pressed = 0;
+unsigned char extended = 0;
+unsigned char break_code = 0;
 
 void parse_input_buffer() {
-    
+    while (input_avail()) {
+        unsigned char scancode = input_buff[read_ptr++];
+
+        if (scancode == 0xE0) {
+            extended = 1;
+            continue;;
+        }
+
+        if (scancode == 0xF0) {
+            break_code = 1;
+            continue;
+        }
+
+        if (break_code) {
+            // Handle key release
+            if (!extended) {
+                if (scancode == 0x12 || scancode == 0x59) { // Left/Right shift
+                    shift_pressed = 0;
+                }
+            }
+            break_code = 0;
+            extended = 0;
+            continue;
+        }
+
+        // Handle key press
+        if (extended) {
+            switch (scancode) {
+                default: break; // unhandled
+            }
+            extended = 0;
+            continue;
+        }
+
+        // Handle normal keys
+        if (scancode == 0x2A || scancode == 0x36) { // Shift press
+            shift_pressed = 1;
+            continue;
+        }
+
+        unsigned char ascii = shift_pressed ? scancode_shift_table[scancode] : scancode_table[scancode];
+        if (ascii) {
+            parsed_buff[parsed_write_ptr++] == ascii;
+        }
+    }
 }
 
 // input raw scancode to an input buffer
