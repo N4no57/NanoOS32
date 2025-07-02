@@ -45,6 +45,7 @@ void keyboard_interrupt_handler() {
         scancode = inb(0x60);
         input_buff[write_ptr] = scancode;
         write_ptr++;
+        return;
     }
 
     // normal scancodes
