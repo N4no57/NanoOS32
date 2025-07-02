@@ -34,7 +34,8 @@ char *readline(char *buffer, size_t max_len) {
             }
         } else if (ev.type == KEY_SPECIAL) {
             switch (ev.code) {
-
+                case KEY_PGUP: break;
+                case KEY_PGDN: break;
             }
             
         }
