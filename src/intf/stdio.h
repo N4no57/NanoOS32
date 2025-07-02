@@ -5,10 +5,10 @@
 #include <stdint.h>
 
 typedef struct {
-    enum { KEY_ASCII, KEY_SPECIAL } type;
+    enum { KEY_ASCII, KEY_SPECIAL, ERROR } type;
     union {
-        char ascii;
-        uint16_t code; // e.g., KEY_LEFT, KEY_PGUP
+        uint8_t ascii;
+        uint8_t code; // e.g., KEY_LEFT, KEY_PGUP
     };
 } KeyEvent;
 
