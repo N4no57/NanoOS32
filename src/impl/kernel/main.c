@@ -30,7 +30,7 @@ void kernel_main(void) {
 
         char line[128];
         
-        fgets(line, 128);
+        readline(line, 128);
 
         // process command
         if (strcmp(line, "help\n") == 0) {
