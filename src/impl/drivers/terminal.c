@@ -112,7 +112,7 @@ void terminal_render_view() {
 }
 
 void terminal_scroll_up(void) {
-    if (scroll_offset < scroll_back_ln - VGA_HEIGHT) {
+    if (scroll_back_ln >= VGA_HEIGHT-1 && scroll_offset < scroll_back_ln - VGA_HEIGHT) {
         scroll_offset++;
         terminal_render_view();
     }
@@ -176,6 +176,7 @@ void terminal_putchar(char c) {
     if (terminal_column >= VGA_WIDTH) {
         terminal_column = 0;
         terminal_row++;
+        scroll_back_ln++;
     }
 }
 
