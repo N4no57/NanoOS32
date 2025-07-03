@@ -1,4 +1,4 @@
-#include "../../../Intf/stdio.h"
+#include "../../../intf/stdio.h"
 #include "../../../intf/ps2.h"
 
 KeyEvent get_key_event() {
