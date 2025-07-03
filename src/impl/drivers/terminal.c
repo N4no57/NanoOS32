@@ -97,11 +97,11 @@ void terminal_render_view() {
                 terminal_buffer[y * VGA_WIDTH + x] = vga_entry(' ', terminal_color);
             }
         }
-    } else {
+    } else if (scroll_back_buffer >= VGA_HEIGHT + scroll_offset) {
         // compute starting line in scrollback buffer to display
-        size_t start_line = scroll_back_ln - VGA_HEIGHT - scroll_offset;
+        size_t start_line = scroll_back_ln - VGA_HEIGHT - scroll_offset + 1;
 
-        for (size_t y = 0; y < VGA_HEIGHT; y++) {
+        for (size_t y = 0; y < VGA_HEIGHT - 1; y++) {
             for (size_t x = 0; x < VGA_WIDTH; x++) {
                 size_t src_index = (start_line + y) * VGA_WIDTH + x;
                 size_t dst_index = y * VGA_WIDTH + x;
