@@ -1,3 +1,3 @@
-CFLAGS += -O0
-LDFLAGS := -O0
+CFLAGS += -O0 -g
+LDFLAGS := -O0 -g
 BUILD_TYPE := debug
