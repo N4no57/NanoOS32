@@ -99,7 +99,7 @@ void terminal_render_view() {
         }
     } else if (scroll_back_buffer >= VGA_HEIGHT + scroll_offset) {
         // compute starting line in scrollback buffer to display
-        size_t start_line = scroll_back_ln - VGA_HEIGHT - scroll_offset + 1;
+        size_t start_line = scroll_back_ln - (VGA_HEIGHT-1) - scroll_offset + 1;
 
         for (size_t y = 0; y < VGA_HEIGHT - 1; y++) {
             for (size_t x = 0; x < VGA_WIDTH; x++) {
