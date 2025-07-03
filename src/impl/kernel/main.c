@@ -16,8 +16,8 @@ void kernel_init(void) {
     terminal_initialize();
 	heap_init();
 	set_frequency(11932);
-	idt_init();
 	PIC_remap(PIC1, PIC2);
+	idt_init();
 }
 
 void kernel_main(void) {
@@ -30,7 +30,7 @@ void kernel_main(void) {
 
         char line[128];
         
-        fgets(line, 128);
+        readline(line, 128);
 
         // process command
         if (strcmp(line, "help\n") == 0) {
