@@ -1,0 +1,3 @@
+CFLAGS += -O0
+LDFLAGS := -O0
+BUILD_TYPE := debug
