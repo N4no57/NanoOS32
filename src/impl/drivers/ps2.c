@@ -50,7 +50,7 @@ void parse_input_buffer() {
 
         if (scancode == 0xE0) {
             extended = 1;
-            continue;;
+            continue;
         }
 
         // Handle key release
@@ -63,8 +63,8 @@ void parse_input_buffer() {
         // Handle key press
         if (extended) {
             switch (scancode) {
-                case 0x7D: key_event[key_event_write_ptr++] = KEY_PGUP; break;
-                case 0x7A: key_event[key_event_write_ptr++] = KEY_PGDN; break;
+                case 0x49: key_event[key_event_write_ptr++] = KEY_PGUP; break;
+                case 0x51: key_event[key_event_write_ptr++] = KEY_PGDN; break;
                 default: break; // unhandled
             }
             extended = 0;
@@ -91,7 +91,7 @@ void keyboard_interrupt_handler() {
     unsigned char scancode = inb(0x60);
 
     if (scancode == 0xE0) { // extended scancodes
-        input_buff[write_ptr++] = 0xE0;
+        input_buff[write_ptr++] = scancode;
         scancode = inb(0x60);
         input_buff[write_ptr++] = scancode;
         return;
