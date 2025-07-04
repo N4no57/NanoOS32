@@ -36,8 +36,8 @@ char *readline(char *buffer, size_t max_len) {
             switch (ev.code) {
                 case KEY_PGUP: terminal_scroll_up();    break;
                 case KEY_PGDN: terminal_scroll_down();  break;
-                case KEY_HOME: /*scroll_to_line();*/    break;
-                case KEY_END:  /*scroll_to_line();*/    break;
+                case KEY_HOME: scroll_to_line(0); break;
+                case KEY_END:  scroll_to_line(1024); break;
                 default: break;
             }
             
