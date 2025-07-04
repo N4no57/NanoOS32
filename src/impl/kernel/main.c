@@ -22,6 +22,13 @@ void kernel_init(void) {
 	idt_init();
 }
 
+void parse_command(char* command[]) {
+    int32_t argc = 0;
+    char **argv = malloc((ARGV_BASE_CAPACITY) * sizeof(char *));
+
+    char *token = get_tok(command, ' ');
+}
+
 void kernel_main(void) {
     kernel_init();
 
