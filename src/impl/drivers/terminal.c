@@ -73,7 +73,7 @@ void terminal_scroll() {
     // Clear the last line
     uint16_t blank = ' ' | (0x07 << 8);  // space char with light grey on black
     for (int col = 0; col < VGA_WIDTH; ++col) {
-        terminal_buffer[(VGA_HEIGHT - 1) * VGA_WIDTH + col] = blank;
+        terminal_buffer[TRUE_VGA_HEIGHT * VGA_WIDTH + col] = blank;
     }
 }
 
@@ -97,11 +97,11 @@ void terminal_render_view() {
                 terminal_buffer[y * VGA_WIDTH + x] = vga_entry(' ', terminal_color);
             }
         }
-    } else if (scroll_back_buffer >= VGA_HEIGHT + scroll_offset) {
+    } else if (scroll_back_ln >= TRUE_VGA_HEIGHT + scroll_offset) {
         // compute starting line in scrollback buffer to display
-        size_t start_line = scroll_back_ln - (VGA_HEIGHT-1) - scroll_offset + 1;
+        size_t start_line = scroll_back_ln - TRUE_VGA_HEIGHT - scroll_offset + 1;
 
-        for (size_t y = 0; y < VGA_HEIGHT - 1; y++) {
+        for (size_t y = 0; y < TRUE_VGA_HEIGHT; y++) {
             for (size_t x = 0; x < VGA_WIDTH; x++) {
                 size_t src_index = (start_line + y) * VGA_WIDTH + x;
                 size_t dst_index = y * VGA_WIDTH + x;
@@ -112,7 +112,7 @@ void terminal_render_view() {
 }
 
 void terminal_scroll_up(void) {
-    if (scroll_back_ln >= VGA_HEIGHT-1 && scroll_offset < scroll_back_ln - VGA_HEIGHT) {
+    if (scroll_back_ln >= TRUE_VGA_HEIGHT && scroll_offset < scroll_back_ln - VGA_HEIGHT) {
         scroll_offset++;
         terminal_render_view();
     }
@@ -135,7 +135,7 @@ void terminal_putentryat(char c, uint8_t color, size_t x, size_t y) {
 }
 
 void terminal_putchar(char c) {
-    while (terminal_row >= VGA_HEIGHT-1) {
+    while (terminal_row >= TRUE_VGA_HEIGHT) {
         terminal_scroll();
         terminal_row--;
     }
