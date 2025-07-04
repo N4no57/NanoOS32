@@ -97,7 +97,7 @@ void terminal_render_view() {
                 terminal_buffer[y * VGA_WIDTH + x] = vga_entry(' ', terminal_color);
             }
         }
-    } else if (scroll_back_ln >= TRUE_VGA_HEIGHT + scroll_offset) {
+    } else if (scroll_back_ln >= TRUE_VGA_HEIGHT + (scroll_offset-1)) {
         // compute starting line in scrollback buffer to display
         size_t start_line = scroll_back_ln - TRUE_VGA_HEIGHT - scroll_offset + 1;
 
@@ -112,7 +112,7 @@ void terminal_render_view() {
 }
 
 void terminal_scroll_up(void) {
-    if (scroll_back_ln >= TRUE_VGA_HEIGHT && scroll_offset < scroll_back_ln - VGA_HEIGHT) {
+    if (scroll_back_ln >= TRUE_VGA_HEIGHT && scroll_offset <= scroll_back_ln - TRUE_VGA_HEIGHT) {
         scroll_offset++;
         terminal_render_view();
     }
