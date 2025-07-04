@@ -22,6 +22,7 @@ enum vga_color {
 
 #define VGA_WIDTH   80
 #define VGA_HEIGHT  26
+#define TRUE_VGA_HEIGHT 25
 #define VGA_MEMORY  0xB8000
 
 #define CURSOR_INDEX_REGISTER 0x3D4
