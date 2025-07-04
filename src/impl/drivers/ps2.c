@@ -65,9 +65,9 @@ void parse_input_buffer() {
         if (extended) { // extended scan codes
             switch (scancode) {
                 case 0x47: key_event[key_event_write_ptr++] = KEY_HOME; break;
+                case 0x4F: key_event[key_event_write_ptr++] = KEY_END;  break;
                 case 0x49: key_event[key_event_write_ptr++] = KEY_PGUP; break;
                 case 0x51: key_event[key_event_write_ptr++] = KEY_PGDN; break;
-                case 0x69: key_event[key_event_write_ptr++] = KEY_END;  break;
                 default: break; // unhandled
             }
             extended = 0;
