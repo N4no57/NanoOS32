@@ -129,17 +129,11 @@ void scroll_to_line(uint16_t line) {
 }
 
 void terminal_scroll_up(void) {
-    if (scroll_back_ln >= TRUE_VGA_HEIGHT && scroll_offset <= scroll_back_ln - TRUE_VGA_HEIGHT) {
-        scroll_offset++;
-        terminal_render_view();
-    }
+    scroll_to_line(scroll_back_ln-(++scroll_offset));
 }
 
 void terminal_scroll_down(void) {
-    if (scroll_offset > 0) {
-        scroll_offset--;
-        terminal_render_view();
-    }
+    scroll_to_line(scroll_back_ln-(--scroll_offset));
 }
 
 void terminal_putentryat(char c, uint8_t color, size_t x, size_t y) {
