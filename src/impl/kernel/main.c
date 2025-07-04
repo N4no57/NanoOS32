@@ -12,6 +12,8 @@
 #error "You are not using a cross-compiler, you will most certainly run into trouble"
 #endif
 
+#define ARGV_BASE_CAPACITY 4
+
 void kernel_init(void) {
     terminal_initialize();
 	heap_init();
