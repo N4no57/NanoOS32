@@ -1,6 +1,7 @@
 #ifndef PS2_H
 #define PS2_H
 
+// special keys, non ascii
 #define KEY_UP     0x80
 #define KEY_DOWN   0x81
 #define KEY_LEFT   0x82

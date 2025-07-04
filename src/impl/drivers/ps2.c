@@ -48,6 +48,7 @@ void parse_input_buffer() {
     while (input_avail()) {
         unsigned char scancode = input_buff[read_ptr++];
 
+        // check if scancode is an extended scancode
         if (scancode == 0xE0) {
             extended = 1;
             continue;
@@ -61,8 +62,10 @@ void parse_input_buffer() {
         }
 
         // Handle key press
-        if (extended) {
+        if (extended) { // extended scan codes
             switch (scancode) {
+                case 0x47: key_event[key_event_write_ptr++] = KEY_HOME; break;
+                case 0x4F: key_event[key_event_write_ptr++] = KEY_END;  break;
                 case 0x49: key_event[key_event_write_ptr++] = KEY_PGUP; break;
                 case 0x51: key_event[key_event_write_ptr++] = KEY_PGDN; break;
                 default: break; // unhandled
