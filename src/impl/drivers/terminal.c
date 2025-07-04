@@ -111,6 +111,23 @@ void terminal_render_view() {
     }
 }
 
+void scroll_to_line(uint16_t line) {
+    if (scroll_back_ln <= TRUE_VGA_HEIGHT) return; // No scrollback yet
+
+    if (line < TRUE_VGA_HEIGHT)
+        line = (TRUE_VGA_HEIGHT-1);
+    if (line > scroll_back_ln)
+        line = scroll_back_ln;
+
+    scroll_offset = scroll_back_ln - line;
+
+    // Clamp to max scroll offset
+    if (scroll_offset > scroll_back_ln - (TRUE_VGA_HEIGHT-1))
+        scroll_offset = scroll_back_ln - (TRUE_VGA_HEIGHT-1);
+
+    terminal_render_view();
+}
+
 void terminal_scroll_up(void) {
     if (scroll_back_ln >= TRUE_VGA_HEIGHT && scroll_offset <= scroll_back_ln - TRUE_VGA_HEIGHT) {
         scroll_offset++;
