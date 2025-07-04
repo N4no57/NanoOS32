@@ -81,8 +81,8 @@ void terminal_update_cursor() {
     vga_set_cursor(terminal_row, terminal_column);
 }
 
-void terminal_render_view() {
-    if (scroll_back_ln < VGA_HEIGHT) {
+void terminal_render_view() {_
+    if (scroll_back_ln < TRUEVGA_HEIGHT) {
         // Not enough lines yet, copy what is available
         for (size_t y = 0; y < scroll_back_ln; y++) {
             for (size_t x = 0; x < VGA_WIDTH; x++) {
