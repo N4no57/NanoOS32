@@ -82,7 +82,7 @@ void terminal_update_cursor() {
 }
 
 void terminal_render_view() {
-    if (scroll_back_ln < VGA_HEIGHT) {
+    if (scroll_back_ln < TRUE_VGA_HEIGHT) {
         // Not enough lines yet, copy what is available
         for (size_t y = 0; y < scroll_back_ln; y++) {
             for (size_t x = 0; x < VGA_WIDTH; x++) {
