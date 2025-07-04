@@ -22,6 +22,7 @@ enum vga_color {
 
 #define VGA_WIDTH   80
 #define VGA_HEIGHT  26
+#define TRUE_VGA_HEIGHT 25
 #define VGA_MEMORY  0xB8000
 
 #define CURSOR_INDEX_REGISTER 0x3D4
@@ -32,9 +33,14 @@ enum vga_color {
 
 #define TAB_SIZE 4
 
+#define SCROLLBACK_MAX_LINES 1024
+
 void terminal_initialize(void);
 void terminal_writestring(const char* data);
 void terminal_write(const char* data, size_t size);
 void terminal_putchar(char c);
 void terminal_update_cursor(void);
 void terminal_clear(void);
+
+void terminal_scroll_up(void);
+void terminal_scroll_down(void);
