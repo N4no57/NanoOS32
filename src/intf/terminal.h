@@ -1,4 +1,5 @@
 #include <stddef.h>
+#include <stdint.h>
 
 /* Hardware text mode color constants. */
 enum vga_color {
@@ -42,5 +43,6 @@ void terminal_putchar(char c);
 void terminal_update_cursor(void);
 void terminal_clear(void);
 
+void scroll_to_line(uint16_t line);
 void terminal_scroll_up(void);
 void terminal_scroll_down(void);
