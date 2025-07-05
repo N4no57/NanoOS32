@@ -1,5 +1,6 @@
 {
     "files.associations": {
+        "*.debug": "makefile",
         "stddef.h": "c",
         "stdint.h": "c",
         "terminal.h": "c",
@@ -16,6 +17,7 @@
         "irq.h": "c",
         "idt.h": "c",
         "pic.h": "c",
-        "ps2.h": "c"
+        "ps2.h": "c",
+        "commands.h": "c"
     }
 }
