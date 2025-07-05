@@ -1,5 +1,7 @@
 typedef int (*command_func_t)(int argc, char **argv);
 
+int cmd_help(int argc, char **argv);
+
 typedef struct {
     const char* name;
     command_func_t func;
