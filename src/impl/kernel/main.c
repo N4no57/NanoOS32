@@ -75,6 +75,10 @@ void parse_command(char command[], int *out_argc, char ***out_argv) {
     *out_argv = argv;
 }
 
+void execute_command(int argc, char **argv) {
+
+}
+
 void kernel_main(void) {
     kernel_init();
 
@@ -92,12 +96,6 @@ void kernel_main(void) {
         readline(line, 128);
 
         parse_command(line, &argc, &argv);
-
-        // print tokens
-        for (int i = 0; i < argc; i++) {
-            printf("\"%s\" ", argv[i]);
-        }
-        printf("\n");
 
         // free argv (all the tokens)
         for (int i = 0; i < argc; i++) {
