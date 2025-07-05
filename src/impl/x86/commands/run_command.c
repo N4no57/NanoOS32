@@ -4,7 +4,15 @@
 
 command_entry_t commands[] = {
     { "help", cmd_help },
+<<<<<<< HEAD
+    { "exit", cmd_exit },
+    { "clear", cmd_clear },
+    { "echo", cmd_echo },
+    { "halt", cmd_halt },
+    { "reboot", cmd_reboot }
+=======
     { "exit", cmd_exit }
+>>>>>>> main
 };
 
 int command_count = sizeof(commands) / sizeof(commands[0]);
