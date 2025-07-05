@@ -3,8 +3,10 @@
 
 int cmd_help(int argc, char **argv) {
     if (argc >= 2) {
-        return -1;
+        printf("idk what your mentioning here\n");
+        return 0;
     }
 
     printf("I don't do anything\nHow am I supposed to help?\n");
+    return 0;
 }
