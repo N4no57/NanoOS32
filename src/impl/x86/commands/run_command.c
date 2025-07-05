@@ -1,6 +1,12 @@
 #include "../../../intf/commands.h"
 #include "../../../intf/string.h"
 
+command_entry_t commands[] = {
+    { "help", cmd_help },
+};
+
+int command_count = sizeof(commands) / sizeof(commands[0]);
+
 int run_command(int argc, char **argv) {
     char name[strlen(argv[0])];
     strcpy(name, argv[0]);
