@@ -1,4 +1,5 @@
 #include "../../../intf/commands.h"
+#include "../../../intf/stdio.h"
 #include "../../../intf/string.h"
 
 command_entry_t commands[] = {
@@ -16,5 +17,6 @@ int run_command(int argc, char **argv) {
         }
     }
 
+    printf("Command '%s' not found\n", name);
     return -1;
 }
