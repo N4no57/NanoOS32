@@ -4,5 +4,5 @@
 #include "../../../intf/stdio.h"
 
 int cmd_reboot(int argc, char **argv) {
-    printf("not implemented yet");
+    printf("not implemented yet\n");
 }
