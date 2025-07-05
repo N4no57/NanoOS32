@@ -10,8 +10,9 @@ int cmd_help(int argc, char **argv) {
     printf("Built-in functions:\n\n");
     printf("clear\n");
     printf("echo [arg ...]\n");
-    printf("halt\n");
     printf("exit\n");
+    printf("halt\n");
+    printf("help [-dms] [pattern ...]");
     printf("reboot\n");
     return 0;
 }
