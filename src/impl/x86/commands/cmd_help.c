@@ -3,7 +3,7 @@
 
 int cmd_help(int argc, char **argv) {
     if (argc >= 2) {
-        printf("idk what your mentioning here\n");
+        printf("help: no help topics match '%s'. Try 'help help'\n", argv[1]);
         return 0;
     }
 
