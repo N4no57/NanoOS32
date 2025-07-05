@@ -7,6 +7,11 @@ int cmd_help(int argc, char **argv) {
         return 0;
     }
 
-    printf("I don't do anything\nHow am I supposed to help?\n");
+    printf("Built-in functions:\n\n");
+    printf("clear\n");
+    printf("echo [arg ...]\n");
+    printf("halt\n");
+    printf("exit\n");
+    printf("reboot\n");
     return 0;
 }
