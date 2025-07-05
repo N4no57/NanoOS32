@@ -3,6 +3,6 @@
 
 __attribute__((NORETURN))
 int cmd_halt(int argc, char **argv) {
-    printf("Halting");
+    printf("Halting...\n");
     for (;;) __asm__ volatile("hlt");
 }
