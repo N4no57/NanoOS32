@@ -10,12 +10,9 @@ extern int command_count;
 
 int run_command(int argc, char **argv);
 int cmd_help(int argc, char **argv);
-<<<<<<< HEAD
 int cmd_exit(int argc, char **argv);
 int cmd_clear(int argc, char **argv);
 int cmd_echo(int argc, char **argv);
 int cmd_halt(int argc, char **argv);
 int cmd_reboot(int argc, char **argv);
-=======
 int cmd_exit(int argc, char **argv);
->>>>>>> main

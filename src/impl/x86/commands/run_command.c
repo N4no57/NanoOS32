@@ -4,21 +4,18 @@
 
 command_entry_t commands[] = {
     { "help", cmd_help },
-<<<<<<< HEAD
     { "exit", cmd_exit },
     { "clear", cmd_clear },
     { "echo", cmd_echo },
     { "halt", cmd_halt },
-    { "reboot", cmd_reboot }
-=======
+    { "reboot", cmd_reboot },
     { "exit", cmd_exit }
->>>>>>> main
 };
 
 int command_count = sizeof(commands) / sizeof(commands[0]);
 
 int run_command(int argc, char **argv) {
-    char name[strlen(argv[0])];
+    char name[strlen(argv[0])+1];
     strcpy(name, argv[0]);
     for (int i = 0; i < command_count; i++) {
         if (strcmp(name, commands[i].name) == 0) {

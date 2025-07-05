@@ -1,4 +1,4 @@
-#include "../../../intf/stdio.h"
+#include "../../../intf/string.h"
 
 char *strcat(char *destination, const char *source) {
     int dest_str_end = strlen(destination);
