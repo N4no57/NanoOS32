@@ -94,7 +94,11 @@ void kernel_main(void) {
 
         parse_command(line, &argc, &argv);
 
-        run_command(argc, argv);
+        int result = run_command(argc, argv);
+
+        if (result != 0 && result != -1) {
+            printf("Error\n");
+        }
 
         // free argv (all the tokens)
         for (int i = 0; i < argc; i++) {
