@@ -76,7 +76,7 @@ void parse_command(char command[], int *out_argc, char ***out_argv) {
 }
 
 void execute_command(int argc, char **argv) {
-
+    
 }
 
 void kernel_main(void) {
@@ -96,6 +96,8 @@ void kernel_main(void) {
         readline(line, 128);
 
         parse_command(line, &argc, &argv);
+
+        execute_command(argc, argv);
 
         // free argv (all the tokens)
         for (int i = 0; i < argc; i++) {
