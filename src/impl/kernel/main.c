@@ -82,6 +82,7 @@ void kernel_main(void) {
 	printf("Welcome to ShitOS\n");
 
 	while (1) {
+        tok_idx = 0;
         int argc;
         char **argv;
 

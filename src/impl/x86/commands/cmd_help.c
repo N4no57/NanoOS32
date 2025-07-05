@@ -12,7 +12,7 @@ int cmd_help(int argc, char **argv) {
     printf("echo [arg ...]\n");
     printf("exit\n");
     printf("halt\n");
-    printf("help [-dms] [pattern ...]");
+    printf("help [-dms] [pattern ...]\n");
     printf("reboot\n");
     return 0;
 }
