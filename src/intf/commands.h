@@ -11,4 +11,4 @@ command_entry_t commands[] = {
 
 const int command_count = sizeof(commands) / sizeof(commands[0]);
 
-int run_command(const char *name, int argc, char **argv);
+int run_command(int argc, char **argv);
