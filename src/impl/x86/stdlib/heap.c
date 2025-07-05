@@ -6,8 +6,8 @@
 
 #define MIN_CHUNK_SIZE sizeof(struct heapchunk_t) + 4
 
-extern uint8_t heap_start;
-extern uint8_t heap_end;
+extern uint8_t heap_start[];
+extern uint8_t heap_end[];
 
 struct heapinfo_t {
     struct heapchunk_t *start;
