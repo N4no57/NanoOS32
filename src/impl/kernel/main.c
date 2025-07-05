@@ -75,8 +75,17 @@ void parse_command(char command[], int *out_argc, char ***out_argv) {
     *out_argv = argv;
 }
 
-void execute_command(int argc, char **argv) {
-    
+void execute_command(const int argc, char **argv) {
+    char command[strlen(argv[0])];
+    strcpy(command, argv[0]);
+
+    if (strcmp(command, "clear") == 0) {
+        if (argc >= 2) {
+            printf("Usage: clear\n");
+            return;
+        }
+        terminal_clear();
+    }
 }
 
 void kernel_main(void) {
