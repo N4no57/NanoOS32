@@ -6,7 +6,8 @@ command_entry_t commands[] = {
     { "help", cmd_help },
     { "exit", cmd_exit },
     { "clear", cmd_clear },
-    { "echo", cmd_echo }
+    { "echo", cmd_echo },
+    { "halt", cmd_halt },
 };
 
 int command_count = sizeof(commands) / sizeof(commands[0]);
