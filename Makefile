@@ -16,18 +16,25 @@ kernel_image: kernel
 	mkdir -p os-image/boot/grub
 	cp build/kernel.elf os-image/boot/
 	cp grub.cfg os-image/boot/grub/
-	dd if=/dev/zero of=kernel.img bs=512 count=2880
-	mformat -i kernel.img -f 1440 ::
+	dd if=/dev/zero of=kernel.img bs=512 count=62500
+	mkfs.fat -F 16 kernel.img  62500
 	mmd -i kernel.img ::/boot
 	mmd -i kernel.img ::/boot/grub
 	mcopy -i kernel.img build/kernel.elf ::/boot/
 	mcopy -i kernel.img grub.cfg ::/boot/grub/
-	grub-install --target=i386-pc \
-             --boot-directory=os-image/boot \
-             --modules="normal multiboot" \
-             --no-floppy \
-             --force \
-             --root-directory=os-image \
-             kernel.img
+	@LOOPDEV=$$(sudo losetup --find --show kernel.img); \
+	sudo mkdir -p mnt; \
+	sudo mount $$LOOPDEV mnt; \
+	sudo grub-install --target=i386-pc \
+	                  --directory=/usr/lib/grub/i386-pc \
+	                  --modules="normal multiboot" \
+	                  --boot-directory=mnt/boot \
+	                  --no-floppy \
+	                  --force \
+	                  --removable \
+	                  $$LOOPDEV; \
+	sudo umount mnt; \
+	sudo losetup -d $$LOOPDEV; \
+	sudo rm -r mnt
 
 kernel: build-x86
