@@ -23,6 +23,11 @@ int run_command(int argc, char **argv) {
         }
     }
 
+    if (argv[0] == 0x0) {
+        printf("Command ' ' not found\n");
+        return -1;
+    }
+
     printf("Command '%s' not found\n", name);
     return -1;
 }
