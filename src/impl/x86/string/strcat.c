@@ -1,10 +1,11 @@
 #include "../../../intf/string.h"
 
 char *strcat(char *destination, const char *source) {
-    int dest_str_end = strlen(destination);
-    for (int i = dest_str_end; i < strlen(source); i++) {
-        destination[dest_str_end++] = source[i];
+    int dest_len = strlen(destination);
+    int source_len = strlen(source);
+    for (int i = 0; i < source_len; i++) {
+        destination[dest_len + i] = source[i];
     }
-    destination[dest_str_end] = '\0';
+    destination[dest_len + source_len] = '\0';
     return destination;
 }
