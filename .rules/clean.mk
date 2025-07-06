@@ -1,2 +1,2 @@
 clean:
-	rm -rf build/ os-image/ kernel.img
+	rm -rf build/ kernel.img
