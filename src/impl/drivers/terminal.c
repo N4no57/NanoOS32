@@ -4,10 +4,12 @@
 #include <string.h>
 #include <stdio.h>
 
+// returns an 8-bit colour entry according to the VGA 16 colour pallet for the foreground and background
 static inline uint8_t vga_entry_color(enum vga_color fg, enum vga_color bg)  {
 	return fg | bg << 4;
 }
 
+// returns a 16-bit entry with an ASCII character as the high byte and the colour entry as the low byte
 static inline uint16_t vga_entry(unsigned char uc, uint8_t color) {
 	return (uint16_t) uc | (uint16_t) color << 8;
 }
@@ -20,6 +22,7 @@ uint8_t terminal_color;
 uint16_t* terminal_buffer = (uint16_t*)VGA_MEMORY;
 uint16_t scroll_back_buffer[SCROLLBACK_MAX_LINES*VGA_WIDTH];
 
+// clear the screen and the scrollback buffer, set all location variables to 0
 void terminal_clear() {
     for (size_t y = 0; y < VGA_HEIGHT; y++) {
 		for (size_t x = 0; x < VGA_WIDTH; x++) {
@@ -63,6 +66,7 @@ void vga_set_cursor(uint8_t row, uint8_t column) {
     outb(CURSOR_DATA_REGISTER, (uint8_t)((pos >> 8) & 0xFF));
 }
 
+// scrolls the terminal when writes overrun the screen buffer
 void terminal_scroll() {
     for (int row = 1; row < VGA_HEIGHT; ++row) {
         for (int col = 0; col < VGA_WIDTH; ++col) {
@@ -81,6 +85,7 @@ void terminal_update_cursor() {
     vga_set_cursor(terminal_row, terminal_column);
 }
 
+// render a viewport of the scrollback buffer
 void terminal_render_view() {
     if (scroll_back_ln < TRUE_VGA_HEIGHT) {
         // Not enough lines yet, copy what is available
@@ -111,6 +116,7 @@ void terminal_render_view() {
     }
 }
 
+// sets the line to scroll to
 void scroll_to_line(uint16_t line) {
     if (scroll_back_ln <= TRUE_VGA_HEIGHT) return; // No scrollback yet
 
@@ -145,6 +151,7 @@ void terminal_putentryat(char c, uint8_t color, size_t x, size_t y) {
     }
 }
 
+// puts a character to the screen
 void terminal_putchar(char c) {
     while (terminal_row >= TRUE_VGA_HEIGHT) {
         terminal_scroll();
