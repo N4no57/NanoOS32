@@ -2,7 +2,7 @@ CROSS_GCC := $(HOME)/opt/cross/bin/i686-elf-gcc
 CROSS_AS  := $(HOME)/opt/cross/bin/i686-elf-as
 
 # Common includes & flags
-INCLUDES := -I src/intf
+INCLUDES := -I src/intf -I src/drivers/floppy_driver
 CFLAGS := $(INCLUDES) -ffreestanding -Wall -nostdlib
 
 kernel_source_files := $(shell find src/impl/kernel -name '*.c')
