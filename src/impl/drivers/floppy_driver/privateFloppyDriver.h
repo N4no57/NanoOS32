@@ -24,3 +24,4 @@ void FDC_init();
 // === Helper functions ===
 
 void send_command(uint8_t command);
+uint8_t read_data();
