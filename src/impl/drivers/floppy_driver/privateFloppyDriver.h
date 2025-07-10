@@ -17,3 +17,6 @@ static inline unsigned char read_cmos(unsigned char reg) {
     outb(0x70, reg | 0x80);
     return inb(0x71);
 }
+
+void floppy_interrupt_handler();
+void FDC_init();
