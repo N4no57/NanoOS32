@@ -18,6 +18,7 @@
         "idt.h": "c",
         "pic.h": "c",
         "ps2.h": "c",
-        "commands.h": "c"
+        "commands.h": "c",
+        "privatefloppydriver.h": "c"
     }
 }
