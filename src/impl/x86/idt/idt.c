@@ -4,6 +4,7 @@
 #include <ps2.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include "../../drivers/floppy_driver/privateFloppyDriver.h"
 
 static bool vectors[IDT_MAX_DESCRIPTORS];
 extern void* isr_stub_table[];
@@ -35,6 +36,9 @@ void interrupt_handler(unsigned char isr) {
             keyboard_interrupt_handler();
             PIC_sendEOI(irq);
             break;
+        case 6:
+            floppy_interrupt_handler();
+            PIC_sendEOI(irq);
         default:
             printf("unhandled irq\n");
             printf("IRQ: %d\n", irq);
