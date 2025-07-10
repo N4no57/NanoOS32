@@ -1,4 +1,5 @@
 #include "../../../intf/stdio.h"
+#include <stdbool.h>
 
 enum FloppyRegisters
 {
@@ -19,7 +20,7 @@ static inline unsigned char read_cmos(unsigned char reg) {
 }
 
 void floppy_interrupt_handler();
-void FDC_init();
+bool FDC_init();
 
 // === Helper functions ===
 
