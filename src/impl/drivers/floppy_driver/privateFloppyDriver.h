@@ -24,5 +24,6 @@ bool FDC_init();
 
 // === Helper functions ===
 
+void wait_for_irq_6();
 void send_command(uint8_t command);
 uint8_t read_data();
