@@ -20,3 +20,7 @@ static inline unsigned char read_cmos(unsigned char reg) {
 
 void floppy_interrupt_handler();
 void FDC_init();
+
+// === Helper functions ===
+
+void send_command(uint8_t command);
