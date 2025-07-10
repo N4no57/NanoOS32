@@ -1,5 +1,6 @@
 #include "privateFloppyDriver.h"
 #include "../../../intf/stdio.h"
+#include  "../../x86/time/privateTime.h"
 
 bool FDC_init() {
     outb(DIGITAL_OUTPUT_REGISTER, 0x00);
