@@ -1,6 +1,8 @@
 #include "../../../intf/stdio.h"
 #include <stdbool.h>
 
+extern volatile bool irq6;
+
 enum FloppyRegisters
 {
    STATUS_REGISTER_A                = 0x3F0, // read-only
