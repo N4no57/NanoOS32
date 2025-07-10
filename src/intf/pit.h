@@ -8,7 +8,7 @@
 
 #include <stdint.h>
 
-extern volatile unsigned int tick;
+extern volatile uint32_t tick;
 
 void set_frequency(uint16_t divisor);
 void pit_interrupt_handler();
