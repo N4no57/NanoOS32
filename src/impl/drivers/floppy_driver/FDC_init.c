@@ -7,12 +7,12 @@ bool FDC_init() {
     outb(DIGITAL_OUTPUT_REGISTER, 0x1C);
     // sleep(500) // wait for drive to spool up
     
-    // wait for irq 6
+    wait_for_irq_6();
     send_command(0x08); // tell FDC to send interrupt status
     uint8_t st0 = read_data(); // status byte 0
     uint8_t cy1 = read_data(); // current cylinder (after seek/recall)
 
-    // wait for irq 6
+    wait_for_irq_6();
     send_command(0x08); // SENSE INTERRUPT
     st0 = read_data();
     cy1 = read_data();
@@ -28,7 +28,7 @@ bool FDC_init() {
         send_command(0x07); // Recalibrate
         send_command(0x00); // Drive 0
 
-        // wait for irq 6
+        wait_for_irq_6();
         send_command(0x08); // SENSE INTERRUPT
         st0 = read_data();
         cy1 = read_data();
