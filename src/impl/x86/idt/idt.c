@@ -39,6 +39,7 @@ void interrupt_handler(unsigned char isr) {
         case 6:
             floppy_interrupt_handler();
             PIC_sendEOI(irq);
+            break;
         default:
             printf("unhandled irq\n");
             printf("IRQ: %d\n", irq);
