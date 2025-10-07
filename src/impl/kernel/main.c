@@ -7,6 +7,7 @@
 #include <pit.h>
 #include <string.h>
 #include "../../intf/commands.h"
+#include "../drivers/pci/picPrivate.h"
 
 /* Check if the compiler thinks you are targeting the wrong operating system. */
 #if defined(__linux__)
@@ -21,6 +22,7 @@ void kernel_init(void) {
 	set_frequency(11932);
 	PIC_remap(PIC1, PIC2);
 	idt_init();
+    checkAllBuses();
 }
 
 int tok_idx = 0;

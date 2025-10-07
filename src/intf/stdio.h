@@ -22,18 +22,34 @@ int printf(const char* _Format, ...);
 KeyEvent get_key_event();
 char *readline(char *buffer, size_t max_len);
 
-static inline unsigned char inb(unsigned short port) {
+static inline uint8_t inb(uint16_t port) {
     unsigned char ret;
     __asm__ volatile("inb %1, %0" : "=a"(ret) : "Nd"(port));
     return ret;
 }
 
-static inline void outb(unsigned short port, unsigned char val) {
+static inline uint16_t inw(uint16_t port) {
+    unsigned char ret;
+    __asm__ volatile("inb %1, %0" : "=a"(ret) : "Nd"(port));
+    return ret;
+}
+
+static inline uint32_t inl(uint16_t port) {
+    unsigned char ret;
+    __asm__ volatile("inb %1, %0" : "=a"(ret) : "Nd"(port));
+    return ret;
+}
+
+static inline void outb(uint16_t port, uint8_t val) {
     __asm__ volatile("outb %0, %1" : : "a"(val), "Nd"(port));
 }
 
-static inline void outw(unsigned short port, unsigned short int val) {
+static inline void outw(uint16_t port, uint16_t val) {
     __asm__ volatile("outw %0, %1" : : "a"(val), "Nd"(port));
+}
+
+static inline void outl(uint16_t port, uint32_t val) {
+    __asm__ volatile("outl %0, %1" : : "a"(val), "Nd"(port));
 }
 
 #endif
